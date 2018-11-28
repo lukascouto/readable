@@ -3,10 +3,10 @@ import { getComments } from '../utils/api'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 
 function receiveComments (comments) {
-    return {
-        type: RECEIVE_COMMENTS,
-        comments,
-    }
+  return {
+      type: RECEIVE_COMMENTS,
+      comments,
+  }
 }
 
 export function handleGetComments (id) {

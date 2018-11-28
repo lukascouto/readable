@@ -6,28 +6,32 @@ import Post from './Post'
 import CommentsList from './CommentsList'
 
 class PostPage extends Component {
-  componentDidMount () {
+  componentDidMount() {
 		const { id } = this.props
 		this.props.dispatch(handleGetPost(id))
     this.props.dispatch(handleGetComments(id))
 	}
   render() {
-    const { post } = this.props
+    const { post, commentIds } = this.props
+
     return(
       <div>
+        {/* Postagem completa */}
         <Post post={post} />
+        {/* Todos os comentários da postagem completa */}
         <div className='card mt-2'>
-        <div className='container'>
-          <h4 className='text-muted mt-3'><span>| </span>Comments</h4>
+          <div className='container'>
+            <h4 className='text-muted mt-3'><span>| </span>Comments ({commentIds.length})</h4>
+          </div>
+          <ul>
+            {commentIds.map((commentId) => (
+              <li key={commentId}>
+                <CommentsList id={commentId} />
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul>
-          {this.props.commentIds.map((id) => (
-            <li key={id}>
-              <CommentsList id={id} />
-            </li>
-          ))}
-        </ul>
-        </div>
+        {/* Formulário para criar um novo comentário */}
       </div>
     )
   }
@@ -40,8 +44,21 @@ function mapStateToProps ({ post, comments }, props) {
     id,
     post,
     commentIds: Object.keys(comments)
+        .sort((a,b) => comments[b].timestamp - comments[a].timestamp)
+  }
+}
+
+/*
+function mapStateToProps ({ post, comments }, props) {
+  const { id } = props.match.params
+
+  return {
+    id,
+    post,
+    commentIds: Object.keys(comments)
       .sort((a,b) => comments[b].timestamp - comments[a].timestamp)
   }
 }
+*/
 
 export default connect(mapStateToProps)(PostPage)
