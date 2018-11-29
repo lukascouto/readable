@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { TiHeartOutline } from 'react-icons/ti/index'
+import { Link } from 'react-router-dom'
 
 class Post extends Component {
   render() {
@@ -20,7 +21,9 @@ class Post extends Component {
             <div className='container'>
               <div className='row'>
                 <p className='card-author text-muted mr-1 mb-0'>by {author}</p>
+                <Link to={`/${category}`}>
                 <p className='card-category mb-0'>| {category}</p>
+                </Link>
               </div>
             </div>
             <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>

@@ -15,15 +15,19 @@ export const getAllCategories = () =>
     .then(res => res.json())
     .catch(error => console.log(error))
 
-export const getAllPosts = () =>
-   fetch(`${api}/posts`, { headers })
-    .then(res => res.json())
-    .catch(error => console.log(error))
+export function getAllPosts (category = undefined) {
+	if (category !== undefined)
+		return fetch(`${api}/${category}/posts`, { headers }).then(res =>
+			res.json(),
+		);
+	return fetch(`${api}/posts`, { headers }).then(res => res.json());
+}
 
 export const getPost = (id) =>
    fetch(`${api}/posts/${id}`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
+
 
 export const getComments = (id) =>
    fetch(`${api}/posts/${id}/comments`, { headers })

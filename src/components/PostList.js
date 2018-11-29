@@ -19,11 +19,13 @@ class Post extends Component {
           <div className='container'>
             <div className='row'>
               <p className='card-author text-muted mr-1 mb-0'>by {author}</p>
+              <Link to={`/${category}`}>
               <p className='card-category mb-0'>| {category}</p>
+              </Link>
             </div>
           </div>
           <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
-          <Link to={`/post/${id}`}>
+          <Link to={`/${category}/${id}`}>
           <h5 className='card-title' style={{color: '#5B86E5'}}>{title}</h5>
           </Link>
           <p className='card-text'>{body}</p>
