@@ -29,7 +29,34 @@ export const getPost = (id) =>
     .catch(error => console.log(error))
 
 
+
+
+export const votePost = (id, option) =>
+  fetch(`${api}/posts/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(option)
+  })
+    .then(res => res.json())
+    .catch(error => console.log(error))
+
+
+
+
 export const getComments = (id) =>
    fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
+
+export const createComment = (body) =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())

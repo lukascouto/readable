@@ -4,6 +4,7 @@ import { handleGetPost } from '../actions/post'
 import { handleGetComments } from '../actions/comments'
 import Post from './Post'
 import CommentsList from './CommentsList'
+import FormComment from './FormComment'
 
 class PostPage extends Component {
   componentDidMount() {
@@ -21,7 +22,9 @@ class PostPage extends Component {
         {/* Todos os comentários da postagem completa */}
         <div className='card mt-2'>
           <div className='container'>
-            <h4 className='text-muted mt-3'><span>| </span>Comments ({commentIds.length})</h4>
+            <h4 className='text-muted mt-3 mb-4'><span>| </span>Comments ({commentIds.length})</h4>
+            {/* Formulário para criar um novo comentário */}
+            <FormComment />
           </div>
           <ul>
             {commentIds.map((commentId) => (
@@ -31,7 +34,6 @@ class PostPage extends Component {
             ))}
           </ul>
         </div>
-        {/* Formulário para criar um novo comentário */}
       </div>
     )
   }

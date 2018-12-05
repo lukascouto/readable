@@ -10,10 +10,11 @@ class CommentsList extends Component {
     const {
       author, timestamp, body, voteScore
     } = comment
-    
+
     return(
       <div>
         <div className='card-body'>
+          <hr className='mt-0'></hr>
           <p className='card-author text-muted mr-1 mb-0'>by {author}</p>
           <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
           <p className='card-text'>{body}</p>
@@ -24,7 +25,6 @@ class CommentsList extends Component {
             </div>
           </div>
         </div>
-        <hr className='mb-0'></hr>
       </div>
     )
   }

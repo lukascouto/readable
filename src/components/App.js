@@ -5,6 +5,7 @@ import { handleInitialData } from '../actions/shared'
 import Nav from './Nav'
 import Dashboard from './Dashboard'
 import PostPage from './PostPage'
+import FormPost from './FormPost'
 
 class App extends Component {
   componentDidMount() {
@@ -22,6 +23,7 @@ class App extends Component {
             <Route path='/' exact component={Dashboard} />
             <Route path='/:category/' exact component={Dashboard} />
             <Route path='/:category/:id' component={PostPage} />
+            <Route path='/new-post' component={FormPost} />
           </div>
         </Fragment>
       </Router>
