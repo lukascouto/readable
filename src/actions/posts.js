@@ -1,4 +1,4 @@
-import { getAllPosts } from '../utils/api'
+import { getAllPosts, createVotePost } from '../utils/api'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const VOTE_POST = 'VOTE_POST'
@@ -19,16 +19,19 @@ export function handleGetAllPosts (category) {
 	}
 }
 
-function votePost ({ id, option }) {
+function votePost ({ post, id, option }) {
 	return {
 		type: VOTE_POST,
-		id,
-		option
+		post
 	}
 }
 
-export function handleVoteComment (option) {
+export function handleVotePost (id, option) {
 	return (dispatch) => {
-		dispatch(votePost(option))
+		return createVotePost({
+				id,
+				option
+			})
+			.then((post) => dispatch(votePost(post)))
 	}
 }

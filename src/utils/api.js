@@ -10,11 +10,13 @@ const headers = {
   'Authorization': token
 }
 
+// Busca todas as categorias
 export const getAllCategories = () =>
    fetch(`${api}/categories`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
+// Busca todos os posts ou todos os posts de uma categoria
 export function getAllPosts (category = undefined) {
 	if (category !== undefined)
 		return fetch(`${api}/${category}/posts`, { headers }).then(res =>
@@ -23,15 +25,27 @@ export function getAllPosts (category = undefined) {
 	return fetch(`${api}/posts`, { headers }).then(res => res.json());
 }
 
+// Busca apenas um post pelo id passado
 export const getPost = (id) =>
    fetch(`${api}/posts/${id}`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
+// Cadastra um novo post
+export const createPost = (body) =>
+  fetch(`${api}/posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+    .then(res => res.json())
+    .catch(error => console.log(error))
 
-
-
-export const votePost = (id, option) =>
+// Cria um novo voto para um post
+export const createVotePost = (id, option) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',
     headers: {
@@ -43,14 +57,13 @@ export const votePost = (id, option) =>
     .then(res => res.json())
     .catch(error => console.log(error))
 
-
-
-
+// Busca todos os comentários de um post
 export const getComments = (id) =>
    fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
+// Cria um novo comentário para um post
 export const createComment = (body) =>
   fetch(`${api}/comments`, {
     method: 'POST',
@@ -59,4 +72,6 @@ export const createComment = (body) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  }).then(res => res.json())
+  })
+    .then(res => res.json())
+    .catch(error => console.log(error))

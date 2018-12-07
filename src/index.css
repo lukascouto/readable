@@ -18,13 +18,11 @@ Link {
 .btn-primary {
   text-transform: uppercase;
   font-weight: 500;
-  padding: 9px 18px;
-  background: #5B86E5;
-  border: none;
+  padding: 8px 18px;
+  background: white;
+  color: #5B86E5;
+  border: 1px solid #5B86E5;
   border-radius: 26px;
-  -webkit-box-shadow: 0px 0px 39px -4px rgba(91,134,229,1);
-  -moz-box-shadow: 0px 0px 39px -4px rgba(91,134,229,1);
-  box-shadow: 0px 0px 39px -4px rgba(91,134,229,1);
 }
 
 .banner {
@@ -98,6 +96,13 @@ h4 {
   font-weight: 700;
 }
 
-.icon {
-  font-size: 1.1rem;
+.message, .heart-up {
+  font-size: 1.5rem;
+  color: #5B86E5;
+}
+
+.heart-down {
+  transform: rotate(180deg);
+  font-size: 1.5rem;
+  color: #5B86E5;
 }

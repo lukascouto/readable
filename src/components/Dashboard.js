@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PostList from './PostList'
+import Teste from './Teste'
 import { handleGetAllPosts } from '../actions/posts'
 
 class Dashboard extends Component {
+
   componentDidMount () {
 		this.props.dispatch(handleGetAllPosts(this.props.category))
 	}
@@ -15,6 +17,10 @@ class Dashboard extends Component {
 		}
 	}
 
+  state = {
+    nome: 'Lukas'
+  }
+
   render() {
     return(
       <div>
@@ -22,9 +28,10 @@ class Dashboard extends Component {
           <div className='card-body'>
             <div className='container'>
               <div className='row'>
-                <h6 className='pt-2'>Filter by</h6>
+                <h6 className='pt-2'>Filter</h6>
                 <select className='form-control col-5 ml-2 mb-3'>
-                  <option>Default select</option>
+                  <option>Date</option>
+                  <option>Vote</option>
                 </select>
                 <Link to={'/new-post'} className='ml-auto'>
                 <button className='btn btn-primary'>New Post</button>
@@ -33,6 +40,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
+        {/*<Teste nome={this.state.nome}/>*/}
         <ul>
           {this.props.postIds.map((id) => (
             <li key={id}>
@@ -51,7 +59,17 @@ function mapStateToProps ({ posts }, props) {
 	const { pathname } = props.location
 
   return {
-    postIds: Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp),
+    // Ordem crescente
+    //postIds: Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp),
+
+    // Ordem decrescente
+    //postIds: Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp),
+
+    // Por voto crescente
+    //postIds: Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore),
+
+    // Por voto decrescente
+    postIds: Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore),
     category,
   	pathname,
   }

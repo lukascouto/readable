@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import book from '../icons/book.svg'
+//import book from '../icons/book.svg'
 
 class Nav extends Component {
 	render () {

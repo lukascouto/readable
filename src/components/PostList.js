@@ -1,10 +1,37 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { TiHeartOutline } from 'react-icons/ti/index'
+import { TiHeartFullOutline, TiHeartHalfOutline, TiMessage } from 'react-icons/ti/index'
 import { Link } from 'react-router-dom'
+import { handleVotePost } from '../actions/posts'
 
 class Post extends Component {
+
+  handleUpVote = (e) => {
+    e.preventDefault()
+
+    const { dispatch, post } = this.props
+
+    dispatch(handleVotePost({
+      id: post.id,
+      option: 'upVote'
+    }))
+  }
+  /*
+  handleDownVote = (e) => {
+    e.preventDefault()
+
+    this.setState({ option: 'downVote' })
+
+    const { dispatch, post } = this.props
+    const { option } = this.state
+
+    dispatch(handleVotePost({
+      id: post.id,
+      option
+    }))
+  }
+  */
   render() {
 
     const { post } = this.props
@@ -32,10 +59,22 @@ class Post extends Component {
           <hr></hr>
           <div className='container'>
             <div className='row'>
-              <TiHeartOutline color='#e0245e' className='icon text-muted mr-1'/>
-              <TiHeartOutline color='#e0245e' className='icon text-muted mr-1'/>
-              <p className='card-vote-score mr-2 text-muted'>{voteScore}</p>
-              <p className='card-comment-count ml-auto text-muted'>{commentCount} comments</p>
+                <TiHeartFullOutline
+                  color='#5B86E5'
+                  className='heart-up'
+                  onClick={this.handleUpVote}
+                />
+                <p className='mx-2 text-muted'>{voteScore}</p>
+                <TiHeartHalfOutline
+                  color='#5B86E5'
+                  className='heart-down'
+                  onClick={this.handleDownVote}
+                />
+              <p className='ml-auto mr-2 text-muted'>{commentCount}</p>
+              <TiMessage
+                color='#5B86E5'
+                className='message'
+              />
             </div>
           </div>
         </div>
