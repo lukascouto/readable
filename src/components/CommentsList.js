@@ -17,7 +17,7 @@ class CommentsList extends Component {
     const { comment } = this.props
 
     const {
-      id, author, timestamp, body, voteScore, deleted
+      author, timestamp, body, voteScore
     } = comment
 
     return(

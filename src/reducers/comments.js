@@ -5,10 +5,7 @@ export default function comments (state = {}, action) {
 		case RECEIVE_COMMENTS :
 			return action.comments
 		case ADD_COMMENT :
-			return {
-				...state,
-				[action.comment.id]: action.comment
-			}
+			return state.concat([action.comment])
 		case REMOVE_COMMENT :
 			return state.filter((comment) => comment.id !== action.id)
 		default :

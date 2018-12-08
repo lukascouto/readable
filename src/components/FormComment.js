@@ -1,15 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAddComment, handleGetComments } from '../actions/comments'
+import { handleAddComment } from '../actions/comments'
 
 class FormComment extends Component {
-
-  componentDidUpdate(prevProps) {
-  const { id } = this.props
-  if (this.props.id !== prevProps.id) {
-    this.props.dispatch(handleGetComments(id))
-  }
-}
 
   state = {
     text: '',
