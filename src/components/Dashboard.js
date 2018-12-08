@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PostList from './PostList'
-import Teste from './Teste'
+//import Teste from './Teste'
 import { handleGetAllPosts } from '../actions/posts'
 
 class Dashboard extends Component {

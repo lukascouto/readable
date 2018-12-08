@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAddComment } from '../actions/comments'
+import { handleAddComment, handleGetComments } from '../actions/comments'
 
 class FormComment extends Component {
+
+  componentDidUpdate(prevProps) {
+  const { id } = this.props
+  if (this.props.id !== prevProps.id) {
+    this.props.dispatch(handleGetComments(id))
+  }
+}
+
   state = {
     text: '',
     author: '',
@@ -17,9 +25,9 @@ class FormComment extends Component {
     e.preventDefault()
 
     const { text, author } = this.state
-    const { dispatch, id } = this.props
+    const { dispatch, post } = this.props
 
-    dispatch(handleAddComment(text, author, id))
+    dispatch(handleAddComment(text, author, post))
 
     // Limpa os campos do formulário
     this.setState(() => ({
@@ -60,4 +68,11 @@ class FormComment extends Component {
   }
 }
 
-export default connect()(FormComment)
+function mapStateToProps ({ post }) {
+
+  return {
+    post
+  }
+}
+
+export default connect(mapStateToProps)(FormComment)

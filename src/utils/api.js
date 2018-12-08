@@ -3,7 +3,8 @@ const api = "http://localhost:3001"
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token
 if (!token)
-  token = localStorage.token = Math.random().toString(36).substr(-8)
+  token = '123456789'
+  //token = localStorage.token = Math.random().toString(36).substr(-8)
 
 const headers = {
   'Accept': 'application/json',
@@ -75,3 +76,15 @@ export const createComment = (body) =>
   })
     .then(res => res.json())
     .catch(error => console.log(error))
+
+// Remove um comentário
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .catch(error => console.log(error))

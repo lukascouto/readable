@@ -7,13 +7,3 @@ export function formatDate (timestamp) {
 function generateUID () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
-
-export function formatComment ({ text }) {
-  return {
-    author: 'junior',
-    id: generateUID(),
-    text,
-    timestamp: Date.now(),
-    parentId: '8xf0y6ziyjabvozdd253nd',
-  }
-}

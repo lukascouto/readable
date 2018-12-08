@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { TiHeartFullOutline, TiHeartHalfOutline, TiMessage } from 'react-icons/ti/index'
+import { TiUserOutline,
+         TiHeartOutline,
+         TiMessage } from 'react-icons/ti/index'
 import { Link } from 'react-router-dom'
 import { handleVotePost } from '../actions/posts'
 
-class Post extends Component {
+class PostList extends Component {
+
+  /*
+    o método preventDefault previne o comportamento default do objeto,
+    ou seja, cancela o comportamento que os elementos geralmente tem na página,
+    então se o comportamento padrão de um link é abrir um site, nós vamos cancelar isso.
+  */
 
   handleUpVote = (e) => {
     e.preventDefault()
@@ -45,34 +53,39 @@ class Post extends Component {
         <div className='card-body'>
           <div className='container'>
             <div className='row'>
-              <p className='card-author text-muted mr-1 mb-0'>by {author}</p>
-              <Link to={`/${category}`}>
-              <p className='card-category mb-0'>| {category}</p>
+              <Link to={`/${category}`} className='card-category'>
+              <button className='btn mb-3 py-1'>{category}</button>
               </Link>
+            </div>
+            <div className='row'>
+              <TiUserOutline
+                className='text-muted'
+              />
+              <p className='card-author text-muted mr-1 mb-0'>{author}</p>
             </div>
           </div>
           <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
           <Link to={`/${category}/${id}`}>
-          <h5 className='card-title' style={{color: '#5B86E5'}}>{title}</h5>
+          <h5 className='card-title'>{title}</h5>
           </Link>
-          <p className='card-text'>{body}</p>
+          <p className='card-text text-muted'>{body}</p>
           <hr></hr>
           <div className='container'>
             <div className='row'>
-                <TiHeartFullOutline
-                  color='#5B86E5'
+                <TiHeartOutline
+                  color='#B06AB3'
                   className='heart-up'
                   onClick={this.handleUpVote}
                 />
                 <p className='mx-2 text-muted'>{voteScore}</p>
-                <TiHeartHalfOutline
-                  color='#5B86E5'
+                <TiHeartOutline
+                  color='#B06AB3'
                   className='heart-down'
                   onClick={this.handleDownVote}
                 />
               <p className='ml-auto mr-2 text-muted'>{commentCount}</p>
               <TiMessage
-                color='#5B86E5'
+                color='#B06AB3'
                 className='message'
               />
             </div>
@@ -91,4 +104,4 @@ function mapStateToProps ({ posts }, { id }) {
   }
 }
 
-export default connect(mapStateToProps)(Post)
+export default connect(mapStateToProps)(PostList)

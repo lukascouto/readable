@@ -50,17 +50,4 @@ function mapStateToProps ({ post, comments }, props) {
   }
 }
 
-/*
-function mapStateToProps ({ post, comments }, props) {
-  const { id } = props.match.params
-
-  return {
-    id,
-    post,
-    commentIds: Object.keys(comments)
-      .sort((a,b) => comments[b].timestamp - comments[a].timestamp)
-  }
-}
-*/
-
 export default connect(mapStateToProps)(PostPage)
