@@ -1,13 +1,37 @@
-import { getComments, createComment, deleteComment } from '../utils/api'
+import { getComments, createComment, createVoteComment, deleteComment } from '../utils/api'
+import { generateUID } from '../utils/helpers'
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 
 function receiveComments (comments) {
   return {
       type: RECEIVE_COMMENTS,
       comments,
+  }
+}
+
+function addComment (comment) {
+  return {
+    type: ADD_COMMENT,
+    comment,
+  }
+}
+
+function addVote (comment, option) {
+  return {
+    type: VOTE_COMMENT,
+    comment,
+    option,
+  }
+}
+
+function removeComment (id) {
+  return {
+      type: REMOVE_COMMENT,
+      id,
   }
 }
 
@@ -18,17 +42,6 @@ export function handleGetComments (id) {
 				dispatch(receiveComments(comments))
 		})
 	}
-}
-
-function addComment (comment) {
-  return {
-    type: ADD_COMMENT,
-    comment,
-  }
-}
-
-function generateUID () {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
 export function handleAddComment (text, author, post) {
@@ -46,10 +59,17 @@ export function handleAddComment (text, author, post) {
   }
 }
 
-function removeComment (id) {
-  return {
-      type: REMOVE_COMMENT,
-      id,
+export function handleAddVote (comment, option) {
+  return (dispatch) => {
+    // Atualização otimista
+    dispatch(addVote(comment, option))
+    // Atualização API
+    // Remover as chaves de option para verificar o funcionamento da atualização otimista
+    return createVoteComment(comment.id, { option })
+      .catch(() => {
+        dispatch(addVote(comment))
+        alert('Ocorreu um erro. Tente novamente.')
+      })
   }
 }
 

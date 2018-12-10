@@ -2,9 +2,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { TiHeartOutline } from 'react-icons/ti/index'
-import { handleDeleteComment } from '../actions/comments'
+import { handleDeleteComment, handleAddVote } from '../actions/comments'
 
 class CommentsList extends Component {
+
+  handleVote = (option) => {
+
+    const { dispatch, comment } = this.props
+
+    dispatch(handleAddVote( comment, option ))
+  }
+
   handleDelete = () => {
 
     const { dispatch, comment } = this.props
@@ -30,7 +38,7 @@ class CommentsList extends Component {
           //comments/:id
           */}
           <button
-            className='btn'
+            className='btn btn-primary'
             onClick={this.handleDelete}
           >
             Excluir
@@ -41,8 +49,17 @@ class CommentsList extends Component {
           <p className='card-text'>{body}</p>
           <div className='container'>
             <div className='row'>
-              <TiHeartOutline color='#e0245e' className='icon text-muted mr-1 mb-0'/>
-              <p className='card-vote-score mr-2 text-muted mb-0'>{voteScore}</p>
+                <TiHeartOutline
+                  color='#B06AB3'
+                  className='heart-up'
+                  onClick={() => this.handleVote("upVote")}
+                />
+                <p className='mx-2 text-muted'>{voteScore}</p>
+                <TiHeartOutline
+                  color='#B06AB3'
+                  className='heart-down'
+                  onClick={() => this.handleVote("downVote")}
+                />
             </div>
           </div>
         </div>
