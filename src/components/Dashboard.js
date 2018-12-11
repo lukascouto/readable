@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import PostList from './PostList'
-//import Teste from './Teste'
+import Post from './Post'
 import { handleGetAllPosts } from '../actions/posts'
 
 class Dashboard extends Component {
@@ -16,10 +15,6 @@ class Dashboard extends Component {
 			this.props.dispatch(handleGetAllPosts(this.props.category))
 		}
 	}
-
-  state = {
-    nome: 'Lukas'
-  }
 
   render() {
     return(
@@ -40,11 +35,10 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
-        {/*<Teste nome={this.state.nome}/>*/}
         <ul>
-          {this.props.postIds.map((id) => (
-            <li key={id}>
-              <PostList id={id} />
+          {this.props.postIndex.map((index) => (
+            <li key={index}>
+              <Post id={index} />
             </li>
           ))}
         </ul>
@@ -53,7 +47,6 @@ class Dashboard extends Component {
   }
 }
 
-// Pega os ids dos posts e ordena pela data (timestamp)
 function mapStateToProps ({ posts }, props) {
   const { category } = props.match.params
 	const { pathname } = props.location
@@ -69,7 +62,7 @@ function mapStateToProps ({ posts }, props) {
     //postIds: Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore),
 
     // Por voto decrescente
-    postIds: Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore),
+    postIndex: Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore),
     category,
   	pathname,
   }

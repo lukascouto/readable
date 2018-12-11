@@ -13,9 +13,9 @@ class App extends Component {
   }
   render() {
     return (
-      /*
-        <PostPage match={{params: {id: '8xf0y6ziyjabvozdd253nd'}}}/>
-      */
+
+      //<PostPage match={{params: {id: [0]}}}/>
+
       <Router>
         <Fragment>
           <Nav />
@@ -27,6 +27,7 @@ class App extends Component {
           </div>
         </Fragment>
       </Router>
+
     )
   }
 }

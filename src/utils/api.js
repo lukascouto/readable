@@ -53,9 +53,7 @@ export const createVotePost = (id, option) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(option)
-  })
-    .then(res => res.json())
-    .catch(error => console.log(error))
+  }).then(res => res.json())
 
 // Busca todos os comentários de um post
 export const getComments = (id) =>

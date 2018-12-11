@@ -44,14 +44,14 @@ export function handleGetComments (id) {
 	}
 }
 
-export function handleAddComment (text, author, post) {
+export function handleAddComment (text, author, id) {
   return (dispatch) => {
     return createComment({
       id: generateUID(),
       timestamp: Date.now(),
       body: text,
       author: author,
-      parentId: post.id
+      parentId: id
     })
       .then(comment => {
         dispatch(addComment(comment))

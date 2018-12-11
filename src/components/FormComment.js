@@ -18,9 +18,11 @@ class FormComment extends Component {
     e.preventDefault()
 
     const { text, author } = this.state
-    const { dispatch, post } = this.props
+    const { dispatch, id } = this.props
 
-    dispatch(handleAddComment(text, author, post))
+    console.log('O id é: ', id)
+
+    dispatch(handleAddComment(text, author, id))
 
     // Limpa os campos do formulário
     this.setState(() => ({
@@ -61,11 +63,4 @@ class FormComment extends Component {
   }
 }
 
-function mapStateToProps ({ post }) {
-
-  return {
-    post
-  }
-}
-
-export default connect(mapStateToProps)(FormComment)
+export default connect()(FormComment)

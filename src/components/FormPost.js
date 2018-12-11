@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAddPost } from '../actions/post'
+import { handleAddPost } from '../actions/posts'
 
 class FormPost extends Component {
   state = {
