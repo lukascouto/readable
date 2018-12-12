@@ -1,4 +1,4 @@
-import { RECEIVE_POSTS, RECEIVE_POST, ADD_POST, VOTE_POST } from '../actions/posts'
+import { RECEIVE_POSTS, RECEIVE_POST, ADD_POST, VOTE_POST, REMOVE_POST } from '../actions/posts'
 
 export default function posts (state = {}, action) {
 	switch (action.type) {
@@ -19,6 +19,8 @@ export default function posts (state = {}, action) {
 						action.option === 'upVote' ? { voteScore: post.voteScore+1 } :
 						{ voteScore: post.voteScore-1 }
 					))
+		case REMOVE_POST :
+			return state.filter((post) => post.id !== action.id)
 		default :
 			return state
 	}

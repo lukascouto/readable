@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Post from './Post'
 import { handleGetAllPosts } from '../actions/posts'
+import { GoRocket } from 'react-icons/go'
 
 class Dashboard extends Component {
 
@@ -17,7 +18,25 @@ class Dashboard extends Component {
 	}
 
   render() {
-    return(
+
+    const { posts } = this.props
+
+    if (posts.length === 0) {
+      return (
+        <div className='container text-center text-muted mt-5'>
+          <GoRocket style={{
+            fontSize: '100px',
+            color: '#B06AB3',
+            margin: '20px'
+            }}
+          />
+          <h2><span style={{color: '#B06AB3'}}>Wow! </span>No posts yet.</h2>
+          <p>You can be the first! ;)</p>
+        </div>
+      )
+    }
+
+    return (
       <div>
         <div className='card mt-2'>
           <div className='card-body'>
@@ -65,6 +84,7 @@ function mapStateToProps ({ posts }, props) {
     postIndex: Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore),
     category,
   	pathname,
+    posts
   }
 }
 

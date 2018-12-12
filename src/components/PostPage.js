@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleGetPost, handleGetAllPosts } from '../actions/posts'
+import { handleGetAllPosts } from '../actions/posts'
 import { handleGetComments } from '../actions/comments'
+import { GoRocket } from 'react-icons/go'
+import { TiWeatherStormy } from 'react-icons/ti'
 import Post from './Post'
 import CommentsList from './CommentsList'
 import FormComment from './FormComment'
@@ -15,9 +17,28 @@ class PostPage extends Component {
 	}
 
   render() {
-    const { id, commentIds, postIndex } = this.props
 
-    return(
+    const { id, comments, commentIds, postIndex } = this.props
+
+    // Ao acessar a url da postagem deletada,
+    // postIndex recebe -1 por não ter encontrado o post no array.
+    // Então, renderiza esta mensagem de página não encontrada.
+    if (postIndex === -1) {
+      return (
+        <div className='container text-center text-muted mt-5'>
+          <TiWeatherStormy style={{
+            fontSize: '100px',
+            color: '#B06AB3',
+            margin: '20px'
+            }}
+          />
+          <h2><span style={{color: '#B06AB3'}}>Oops! </span>Something's wrong here...</h2>
+          <p>We can't find the page you're looking for. :(</p>
+        </div>
+      )
+    }
+
+    return (
       <div>
         {/* Abre a postagem completa quando a posição da postagem é recuperada (diferente de -1) */}
         {postIndex !== -1 ? <Post id={postIndex} /> : null }
@@ -27,6 +48,21 @@ class PostPage extends Component {
             <h4 className='text-muted mt-3 mb-4'><span>| </span>Comments ({commentIds.length})</h4>
             {/* Formulário para criar um novo comentário */}
             <FormComment id={id} />
+          </div>
+          <div>
+            {/* Verifica se o array de comentários está vazio para retornar uma mensagem */}
+            {comments.length === 0 ?
+              <div className='container text-center text-muted mt-5'>
+                <GoRocket style={{
+                  fontSize: '100px',
+                  color: '#B06AB3',
+                  margin: '20px'
+                  }}
+                />
+                <h2><span style={{color: '#B06AB3'}}>Wow! </span>No comments yet.</h2>
+                <p>You can be the first! ;)</p>
+              </div> : null
+            }
           </div>
           <ul>
             {commentIds.map((commentId) => (
@@ -53,6 +89,7 @@ function mapStateToProps ({ posts, comments }, props) {
 
   return {
     id,
+    comments,
     postIndex: currentPostIndex,
     commentIds: Object.keys(comments)
         .sort((a,b) => comments[b].timestamp - comments[a].timestamp)

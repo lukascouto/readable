@@ -4,8 +4,10 @@ import { formatDate } from '../utils/helpers'
 import { TiUserOutline,
          TiHeartOutline,
          TiMessage } from 'react-icons/ti/index'
+import { FiMessageCircle } from 'react-icons/fi'
+import { FaUser } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { handleAddVote } from '../actions/posts'
+import { handleAddVote, handleDeletePost } from '../actions/posts'
 
 class PostList extends Component {
 
@@ -22,20 +24,30 @@ class PostList extends Component {
     dispatch(handleAddVote( post, option ))
   }
 
+  handleDelete = () => {
+
+    const { dispatch, post } = this.props
+
+    dispatch(handleDeletePost(post))
+
+  }
+
   render() {
 
     const { post } = this.props
-
-    if (post === null) {
-      return <p>This Post doesn't existd</p>
-    }
 
     const {
       id, author, category, timestamp, title, body, voteScore, commentCount
     } = post
 
-    return(
+    return (
       <div className='card mt-2'>
+      <button
+        className='btn btn-primary'
+        onClick={this.handleDelete}
+      >
+        Excluir
+      </button>
         <div className='card-body'>
           <div className='container'>
             <div className='row'>
@@ -44,7 +56,7 @@ class PostList extends Component {
               </Link>
             </div>
             <div className='row'>
-              <TiUserOutline
+              <FaUser
                 className='text-muted'
               />
               <p className='card-author text-muted mr-1 mb-0'>{author}</p>
@@ -70,7 +82,7 @@ class PostList extends Component {
                   onClick={() => this.handleVote("downVote")}
                 />
                 <p className='ml-auto mr-2 text-muted'>{commentCount}</p>
-                <TiMessage
+                <FiMessageCircle
                   color='#B06AB3'
                   className='message'
                 />

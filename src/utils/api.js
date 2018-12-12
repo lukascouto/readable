@@ -16,6 +16,8 @@ export const getAllCategories = () =>
     .then(res => res.json())
     .catch(error => console.log(error))
 
+// ***************** POSTAGENS ***************** //
+
 // Busca todos os posts ou todos os posts de uma categoria
 export function getAllPosts (category = undefined) {
 	if (category !== undefined)
@@ -25,9 +27,9 @@ export function getAllPosts (category = undefined) {
 	return fetch(`${api}/posts`, { headers }).then(res => res.json());
 }
 
-// Busca apenas um post pelo id passado
+// Retorna o post pelo id
 export const getPost = (id) =>
-   fetch(`${api}/posts/${id}`, { headers })
+  fetch(`${api}/posts/${id}`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
@@ -55,13 +57,27 @@ export const createVotePost = (id, option) =>
     body: JSON.stringify(option)
   }).then(res => res.json())
 
+// Remove um comentário
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .catch(error => console.log(error))
+
+// ***************** COMENTÁRIOS ***************** //
+
 // Busca todos os comentários de um post
 export const getComments = (id) =>
    fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
-// Cria um novo comentário para um post
+// Cria um novo comentário
 export const createComment = (body) =>
   fetch(`${api}/comments`, {
     method: 'POST',
@@ -74,7 +90,7 @@ export const createComment = (body) =>
     .then(res => res.json())
     .catch(error => console.log(error))
 
-// Cria um novo voto para um comment
+// Registra um voto no comment
 export const createVoteComment = (id, option) =>
   fetch(`${api}/comments/${id}`, {
     method: 'POST',
@@ -86,8 +102,8 @@ export const createVoteComment = (id, option) =>
   }).then(res => res.json())
 
 // Remove um comentário
-export const deleteComment = (id) =>
-  fetch(`${api}/comments/${id}`, {
+export const deletePost = (id) =>
+  fetch(`${api}/posts/${id}`, {
     method: 'DELETE',
     headers: {
       ...headers,

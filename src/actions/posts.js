@@ -1,10 +1,11 @@
-import { getAllPosts, getPost, createPost, createVotePost } from '../utils/api'
+import { getAllPosts, getPost, createPost, createVotePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_POST = 'RECEIVE_POST'
 export const ADD_POST = 'ADD_POST'
 export const VOTE_POST = 'VOTE_POST'
+export const REMOVE_POST = 'REMOVE_POST'
 
 function receivePosts (posts) {
 	return {
@@ -32,6 +33,13 @@ function addVote (post, option) {
     type: VOTE_POST,
     post,
     option,
+  }
+}
+
+function removePost (id) {
+  return {
+      type: REMOVE_POST,
+      id,
   }
 }
 
@@ -82,4 +90,21 @@ export function handleAddVote (post, option) {
       })
 
   }
+}
+
+export function handleDeletePost (post) {
+	return (dispatch) => {
+    // Atualização Otimista
+    // Passa impressão que o item foi atualizado instantaneamente
+    // Primeiro remove o item da UI
+    dispatch(removePost(post.id))
+    // Em seguida tenta remover do banco de dados chamando a API
+		return deletePost(post.id)
+      // Se houver erro para remover no banco de dados
+      // O item é adicionado novamente à UI
+      .catch(() => {
+        dispatch(addPost(post))
+        alert('Ocorreu um erro. Tente Novamente.')
+      })
+	}
 }

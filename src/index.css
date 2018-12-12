@@ -6,13 +6,25 @@ body {
   padding: 0;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 h1 {
   font-family: 'Comfortaa', cursive;
   text-decoration: none !important;
 }
 
+h2 {
+  font-weight: 200;
+}
+
 Link {
   text-decoration-line: none;
+}
+
+span {
+  color: #B06AB3;
 }
 
 .btn-primary {
