@@ -1,11 +1,9 @@
-import { RECEIVE_POSTS, RECEIVE_POST, ADD_POST, VOTE_POST, REMOVE_POST } from '../actions/posts'
+import { RECEIVE_POSTS, ADD_POST, VOTE_POST, REMOVE_POST } from '../actions/posts'
 
 export default function posts (state = {}, action) {
 	switch (action.type) {
 		case RECEIVE_POSTS :
 			return action.posts
-		case RECEIVE_POST :
-			return action.post
 		case ADD_POST :
 			return {
 				...state,

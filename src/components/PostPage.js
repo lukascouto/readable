@@ -5,7 +5,7 @@ import { handleGetComments } from '../actions/comments'
 import { GoRocket } from 'react-icons/go'
 import { TiWeatherStormy } from 'react-icons/ti'
 import Post from './Post'
-import CommentsList from './CommentsList'
+import Comment from './Comment'
 import FormComment from './FormComment'
 
 class PostPage extends Component {
@@ -67,7 +67,7 @@ class PostPage extends Component {
           <ul>
             {commentIds.map((commentId) => (
               <li key={commentId}>
-                <CommentsList id={commentId} />
+                <Comment id={commentId} />
               </li>
             ))}
           </ul>

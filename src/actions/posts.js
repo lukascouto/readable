@@ -1,8 +1,7 @@
-import { getAllPosts, getPost, createPost, createVotePost, deletePost } from '../utils/api'
+import { getAllPosts, createPost, createVotePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const RECEIVE_POST = 'RECEIVE_POST'
 export const ADD_POST = 'ADD_POST'
 export const VOTE_POST = 'VOTE_POST'
 export const REMOVE_POST = 'REMOVE_POST'
@@ -11,13 +10,6 @@ function receivePosts (posts) {
 	return {
 		type: RECEIVE_POSTS,
 		posts,
-	}
-}
-
-function receivePost (post) {
-	return {
-		type: RECEIVE_POST,
-		post,
 	}
 }
 
@@ -48,15 +40,6 @@ export function handleGetAllPosts (category) {
 		return getAllPosts(category)
 			.then(posts => {
 				dispatch(receivePosts(posts))
-		})
-	}
-}
-
-export function handleGetPost (id) {
-	return dispatch => {
-		return getPost(id)
-			.then(post => {
-				dispatch(receivePosts(post))
 		})
 	}
 }

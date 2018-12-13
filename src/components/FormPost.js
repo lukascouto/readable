@@ -21,6 +21,11 @@ class FormPost extends Component {
   }
 
   handleSubmit = (e) => {
+    /*
+      o método preventDefault previne o comportamento default do objeto,
+      ou seja, cancela o comportamento que os elementos geralmente tem na página,
+      então se o comportamento padrão de um link é abrir um site, nós vamos cancelar isso.
+    */
     e.preventDefault()
 
     const { title, body, author, category } = this.state

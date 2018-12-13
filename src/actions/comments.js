@@ -1,15 +1,16 @@
-import { getComments, createComment, createVoteComment, deleteComment } from '../utils/api'
+import { getComments, createComment, createVoteComment, updateComment, deleteComment } from '../utils/api'
 import { generateUID } from '../utils/helpers'
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
+export const CHANGE_COMMENT = 'CHANGE_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 
 function receiveComments (comments) {
   return {
-      type: RECEIVE_COMMENTS,
-      comments,
+    type: RECEIVE_COMMENTS,
+    comments,
   }
 }
 
@@ -28,10 +29,17 @@ function addVote (comment, option) {
   }
 }
 
+function changeComment (comment) {
+  return {
+    type: CHANGE_COMMENT,
+    comment,
+  }
+}
+
 function removeComment (id) {
   return {
-      type: REMOVE_COMMENT,
-      id,
+    type: REMOVE_COMMENT,
+    id,
   }
 }
 
@@ -69,6 +77,19 @@ export function handleAddVote (comment, option) {
       .catch(() => {
         dispatch(addVote(comment))
         alert('Ocorreu um erro. Tente novamente.')
+      })
+  }
+}
+
+export function handleUpdateComment (comment, text) {
+  return (dispatch) => {
+    return changeComment({
+      id: comment.id,
+      timestamp: Date.now(),
+      body: text,
+    })
+      .then(comment => {
+        dispatch(updateComment(comment))
       })
   }
 }

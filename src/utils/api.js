@@ -58,8 +58,8 @@ export const createVotePost = (id, option) =>
   }).then(res => res.json())
 
 // Remove um comentário
-export const deleteComment = (id) =>
-  fetch(`${api}/comments/${id}`, {
+export const deletePost = (id) =>
+  fetch(`${api}/posts/${id}`, {
     method: 'DELETE',
     headers: {
       ...headers,
@@ -74,6 +74,12 @@ export const deleteComment = (id) =>
 // Busca todos os comentários de um post
 export const getComments = (id) =>
    fetch(`${api}/posts/${id}/comments`, { headers })
+    .then(res => res.json())
+    .catch(error => console.log(error))
+
+// Busca um comentário
+export const getComment = (id) =>
+   fetch(`${api}/comments/${id}`, { headers })
     .then(res => res.json())
     .catch(error => console.log(error))
 
@@ -101,9 +107,22 @@ export const createVoteComment = (id, option) =>
     body: JSON.stringify(option)
   }).then(res => res.json())
 
+// Edita um comentário
+export const updateComment = (id, body) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  .then(res => res.json())
+  .catch(error => console.log(error))
+
 // Remove um comentário
-export const deletePost = (id) =>
-  fetch(`${api}/posts/${id}`, {
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
     method: 'DELETE',
     headers: {
       ...headers,

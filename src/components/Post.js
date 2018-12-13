@@ -1,31 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { TiUserOutline,
-         TiHeartOutline,
-         TiMessage } from 'react-icons/ti/index'
+import { TiHeartOutline } from 'react-icons/ti/index'
 import { FiMessageCircle } from 'react-icons/fi'
-import { FaUser } from 'react-icons/fa'
+import { FaUser, FaTimes, FaEdit } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { handleAddVote, handleDeletePost } from '../actions/posts'
 
 class PostList extends Component {
 
-  /*
-    o método preventDefault previne o comportamento default do objeto,
-    ou seja, cancela o comportamento que os elementos geralmente tem na página,
-    então se o comportamento padrão de um link é abrir um site, nós vamos cancelar isso.
-  */
-
   handleVote = (option) => {
-
     const { dispatch, post } = this.props
 
     dispatch(handleAddVote( post, option ))
   }
 
   handleDelete = () => {
-
     const { dispatch, post } = this.props
 
     dispatch(handleDeletePost(post))
@@ -33,27 +23,31 @@ class PostList extends Component {
   }
 
   render() {
-
     const { post } = this.props
 
     const {
-      id, author, category, timestamp, title, body, voteScore, commentCount
-    } = post
+      id, author, category, timestamp, title, body, voteScore, commentCount } = post
 
     return (
       <div className='card mt-2'>
-      <button
-        className='btn btn-primary'
-        onClick={this.handleDelete}
-      >
-        Excluir
-      </button>
         <div className='card-body'>
           <div className='container'>
             <div className='row'>
               <Link to={`/${category}`} className='card-category'>
               <button className='btn mb-3 py-1'>{category}</button>
               </Link>
+              <FaTimes
+                className='text-muted mr-4'
+                onClick={this.handleDelete}
+              >
+                Edit
+              </FaTimes>
+              <FaEdit
+                className='text-muted'
+                onClick={this.handleDelete}
+              >
+                Delete
+              </FaEdit>
             </div>
             <div className='row'>
               <FaUser
@@ -93,8 +87,6 @@ class PostList extends Component {
     )
   }
 }
-
-// Preciso ver uma forma de retornar apenas um post
 
 function mapStateToProps ({ posts }, { id }) {
   const post = posts[id]

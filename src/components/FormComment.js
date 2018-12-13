@@ -9,6 +9,17 @@ class FormComment extends Component {
     author: '',
   }
 
+  componentDidMount() {
+    const { comment } = this.props
+
+    if (comment) {
+      this.setState({
+        text: comment.body,
+        author: comment.author
+      })
+    }
+  }
+
   // Pega o name que for igual ao state e repassa o value
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
@@ -18,11 +29,13 @@ class FormComment extends Component {
     e.preventDefault()
 
     const { text, author } = this.state
-    const { dispatch, id } = this.props
+    const { dispatch, comment } = this.props
 
-    console.log('O id é: ', id)
-
-    dispatch(handleAddComment(text, author, id))
+    if (comment) {
+      console.log('Editou!')
+    } else {
+      dispatch(handleAddComment(text, author))
+    }
 
     // Limpa os campos do formulário
     this.setState(() => ({
@@ -30,19 +43,24 @@ class FormComment extends Component {
       author: ''
     }))
   }
-  render() {
+
+  render () {
     const { author, text } = this.state
-    return(
+    const { comment } = this.props
+
+    return (
       <div>
         <form onSubmit={this.handleSubmit}>
           <div className='"form-group"'>
-            <input
-              className='form-control mb-3'
-              placeholder="Your name"
-              name="author"
-              value={author}
-              onChange={this.handleChange}
-            />
+            {!comment ?
+              <input
+                className='form-control mb-3'
+                placeholder="Your name"
+                name="author"
+                value={author}
+                onChange={this.handleChange}
+              />
+              : <p>{author}</p> }
             <textarea
               className='form-control mb-3'
               rows='3'
@@ -52,7 +70,7 @@ class FormComment extends Component {
               onChange={this.handleChange}
             />
             <button
-              className='btn btn-primary'
+              className='btn btn-light'
               type='submit'>
                 Comment
             </button>
@@ -63,4 +81,12 @@ class FormComment extends Component {
   }
 }
 
-export default connect()(FormComment)
+function mapStateToProps ({ comments }, { id }) {
+  const comment = comments[id]
+
+  return {
+    comment
+  }
+}
+
+export default connect(mapStateToProps)(FormComment)
