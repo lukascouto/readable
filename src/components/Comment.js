@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { TiHeartOutline } from 'react-icons/ti/index'
@@ -8,16 +8,24 @@ import FormComment from './FormComment'
 class CommentsList extends Component {
 
   state = {
-    commentSelected: ''
-  }
-
-  handleEdit = () => {
-    this.setState({ commentSelected: this.props.comment })
+    commentSelected: false
   }
 
   handleVote = (option) => {
     const { dispatch, comment } = this.props
     dispatch(handleAddVote( comment, option ))
+  }
+
+  // Seta um valor verdadeiro após clicar em editar um comentário
+  // Passa no if do render e com isso abre o FormComment com o corpo preenchido
+  handleEdit = () => {
+    this.setState({ commentSelected: true })
+  }
+
+  // Seta um valor falso após editar um comentário
+  // Não passa no if do render e com isso fecha o FormComment
+  handleEdited = () => {
+    this.setState({ commentSelected: false })
   }
 
   handleDelete = () => {
@@ -29,10 +37,14 @@ class CommentsList extends Component {
     const { id, comment } = this.props
     const { author, timestamp, body, voteScore } = comment
 
+    // Condição para abrir o formulário para edição de comentário
     if (this.state.commentSelected) {
       return (
         <div className='container mt-5'>
-          <FormComment id={id} />
+          <FormComment
+            id={id}
+            onUpdateComment={this.handleEdited}
+          />
         </div>
       )
     }

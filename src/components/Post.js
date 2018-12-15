@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { TiHeartOutline } from 'react-icons/ti/index'
 import { FiMessageCircle } from 'react-icons/fi'
-import { FaUser, FaTimes, FaEdit } from 'react-icons/fa'
+import { FaUser, FaTrash, FaPen, FaShareAlt, FaRegHeart, FaRegComment } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { handleAddVote, handleDeletePost } from '../actions/posts'
 
@@ -19,7 +19,6 @@ class PostList extends Component {
     const { dispatch, post } = this.props
 
     dispatch(handleDeletePost(post))
-
   }
 
   render() {
@@ -36,24 +35,23 @@ class PostList extends Component {
               <Link to={`/${category}`} className='card-category'>
               <button className='btn mb-3 py-1'>{category}</button>
               </Link>
-              <FaTimes
-                className='text-muted mr-4'
-                onClick={this.handleDelete}
-              >
-                Edit
-              </FaTimes>
-              <FaEdit
-                className='text-muted'
-                onClick={this.handleDelete}
-              >
-                Delete
-              </FaEdit>
+              <div className='ml-auto'>
+                <FaTrash
+                  className='text-muted mr-3'
+                  onClick={this.handleDelete}
+                />
+                <FaPen
+                  className='text-muted mr-3'
+                  onClick={this.handleDelete}
+                />
+                <FaShareAlt
+                  className='text-muted'
+                  onClick={this.handleDelete}
+                />
+              </div>
             </div>
             <div className='row'>
-              <FaUser
-                className='text-muted'
-              />
-              <p className='card-author text-muted mr-1 mb-0'>{author}</p>
+              <p className='card-author text-muted mb-0'>By {author}</p>
             </div>
           </div>
           <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
@@ -64,19 +62,19 @@ class PostList extends Component {
           <hr></hr>
           <div className='container'>
             <div className='row'>
-                <TiHeartOutline
+                <FaRegHeart
                   color='#B06AB3'
                   className='heart-up'
                   onClick={() => this.handleVote("upVote")}
                 />
                 <p className='mx-2 text-muted'>{voteScore}</p>
-                <TiHeartOutline
+                <FaRegHeart
                   color='#B06AB3'
                   className='heart-down'
                   onClick={() => this.handleVote("downVote")}
                 />
                 <p className='ml-auto mr-2 text-muted'>{commentCount}</p>
-                <FiMessageCircle
+                <FaRegComment
                   color='#B06AB3'
                   className='message'
                 />

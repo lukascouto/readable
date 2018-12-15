@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAddComment } from '../actions/comments'
+import { handleAddComment, handleEditComment } from '../actions/comments'
 
 class FormComment extends Component {
 
   state = {
-    text: '',
+    body: '',
     author: '',
   }
 
@@ -14,13 +14,13 @@ class FormComment extends Component {
 
     if (comment) {
       this.setState({
-        text: comment.body,
+        body: comment.body,
         author: comment.author
       })
     }
   }
 
-  // Pega o name que for igual ao state e repassa o value
+  // Para cada valor digitado, o estado correspondente será atualizado
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
@@ -28,24 +28,23 @@ class FormComment extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
 
-    const { text, author } = this.state
-    const { dispatch, comment } = this.props
+    const { body, author } = this.state
+    const { dispatch, comment, posts, id } = this.props
 
-    if (comment) {
-      console.log('Editou!')
-    } else {
-      dispatch(handleAddComment(text, author))
-    }
+    // Se existe um comentário, o dispatch é para editar o comentário e em seguida fechar o formulário
+    // Caso contrário, significa que trata-se de um novo comentário
+    comment ? dispatch(handleEditComment(comment, body)) && this.props.onUpdateComment() :
+    dispatch(handleAddComment(body, author, id))
 
-    // Limpa os campos do formulário
     this.setState(() => ({
-      text: '',
+      body: '',
       author: ''
     }))
   }
 
   render () {
-    const { author, text } = this.state
+
+    const { author, body } = this.state
     const { comment } = this.props
 
     return (
@@ -65,12 +64,13 @@ class FormComment extends Component {
               className='form-control mb-3'
               rows='3'
               placeholder="Type a comment..."
-              name="text"
-              value={text}
+              name="body"
+              value={body}
               onChange={this.handleChange}
             />
             <button
               className='btn btn-light'
+              onClick={() => this.onUpdateComment}
               type='submit'>
                 Comment
             </button>
@@ -84,7 +84,9 @@ class FormComment extends Component {
 function mapStateToProps ({ comments }, { id }) {
   const comment = comments[id]
 
+
   return {
+    id,
     comment
   }
 }

@@ -1,10 +1,11 @@
 import { getComments, createComment, createVoteComment, updateComment, deleteComment } from '../utils/api'
 import { generateUID } from '../utils/helpers'
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
-export const CHANGE_COMMENT = 'CHANGE_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 
 function receiveComments (comments) {
@@ -29,10 +30,11 @@ function addVote (comment, option) {
   }
 }
 
-function changeComment (comment) {
+function editComment (comment, body) {
   return {
-    type: CHANGE_COMMENT,
+    type: EDIT_COMMENT,
     comment,
+    body
   }
 }
 
@@ -52,20 +54,23 @@ export function handleGetComments (id) {
 	}
 }
 
-export function handleAddComment (text, author, id) {
+export function handleAddComment (body, author, id) {
   return (dispatch) => {
+
+    dispatch(showLoading())
+
     return createComment({
       id: generateUID(),
       timestamp: Date.now(),
-      body: text,
+      body: body,
       author: author,
       parentId: id
     })
-      .then(comment => {
-        dispatch(addComment(comment))
-      })
+      .then(comment => dispatch(addComment(comment)))
+      .then(() => dispatch(hideLoading()))
   }
 }
+
 
 export function handleAddVote (comment, option) {
   return (dispatch) => {
@@ -81,16 +86,17 @@ export function handleAddVote (comment, option) {
   }
 }
 
-export function handleUpdateComment (comment, text) {
+export function handleEditComment (comment, body) {
   return (dispatch) => {
-    return changeComment({
-      id: comment.id,
-      timestamp: Date.now(),
-      body: text,
+    // Otimista
+    dispatch(editComment(comment, { timestamp: Date.now(), body }))
+    // API
+    return updateComment(comment.id, { timestamp: Date.now(), body })
+    // Retorna o comentário anterior ao erro
+    .catch(() => {
+      dispatch(addComment(comment))
+      alert('Ocorreu um erro. Tente Novamente.')
     })
-      .then(comment => {
-        dispatch(updateComment(comment))
-      })
   }
 }
 
