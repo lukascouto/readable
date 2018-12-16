@@ -57,6 +57,19 @@ export const createVotePost = (id, option) =>
     body: JSON.stringify(option)
   }).then(res => res.json())
 
+// Edita um post
+export const updatePost = (id, body) =>
+  fetch(`${api}/posts/${id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  .then(res => res.json())
+  .catch(error => console.log(error))
+
 // Remove um comentário
 export const deletePost = (id) =>
   fetch(`${api}/posts/${id}`, {

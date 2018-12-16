@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { FaPlusCircle } from 'react-icons/fa'
 //import book from '../icons/book.svg'
 
 class Nav extends Component {
@@ -24,6 +25,10 @@ class Nav extends Component {
 								*/}
 							<Link to={'/'}>
 							<h1 className='ml-3 mt-4 mb-3 text-light'>Readable</h1>
+							</Link>
+							<Link to={'/new-post'} className='ml-auto mt-4'>
+							<FaPlusCircle color='#fff'
+							style={{fontSize: '30px'}}/>
 							</Link>
 						</div>
 					</div>

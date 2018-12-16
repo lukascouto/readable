@@ -1,9 +1,10 @@
-import { getAllPosts, createPost, createVotePost, deletePost } from '../utils/api'
+import { getAllPosts, createPost, createVotePost, updatePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const ADD_POST = 'ADD_POST'
 export const VOTE_POST = 'VOTE_POST'
+export const EDIT_POST = 'EDIT_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 
 function receivePosts (posts) {
@@ -25,6 +26,14 @@ function addVote (post, option) {
     type: VOTE_POST,
     post,
     option,
+  }
+}
+
+function editPost (post, body) {
+  return {
+    type: EDIT_POST,
+    post,
+    body
   }
 }
 
@@ -72,6 +81,20 @@ export function handleAddVote (post, option) {
         alert('Ocorreu um erro. Tente novamente.')
       })
 
+  }
+}
+
+export function handleEditPost (post, title, body) {
+  return (dispatch) => {
+    // Otimista
+    dispatch(editPost(post, { title, body }))
+    // API
+    return updatePost(post.id, { title, body })
+    // Retorna o comentário anterior ao erro
+    .catch(() => {
+      dispatch(addPost(post))
+      alert('Ocorreu um erro. Tente Novamente.')
+    })
   }
 }
 

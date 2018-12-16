@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared'
-import LoadingBar from 'react-redux-loading'
 import Nav from './Nav'
 import Dashboard from './Dashboard'
 import PostPage from './PostPage'
@@ -19,7 +18,6 @@ class App extends Component {
 
       <Router>
         <Fragment>
-          <LoadingBar />
           <Nav />
           <div className='container'>
             <Route path='/' exact component={Dashboard} />

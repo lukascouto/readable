@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { TiHeartOutline } from 'react-icons/ti/index'
 import { FiMessageCircle } from 'react-icons/fi'
-import { FaUser, FaTrash, FaPen, FaShareAlt, FaRegHeart, FaRegComment } from 'react-icons/fa'
+import { FaTrash, FaPen, FaShareAlt, FaRegHeart, FaRegComment } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { handleAddVote, handleDeletePost } from '../actions/posts'
 
@@ -15,6 +15,10 @@ class PostList extends Component {
     dispatch(handleAddVote( post, option ))
   }
 
+  handleEdit = () => {
+    console.log('Editou')
+  }
+
   handleDelete = () => {
     const { dispatch, post } = this.props
 
@@ -22,6 +26,7 @@ class PostList extends Component {
   }
 
   render() {
+    
     const { post } = this.props
 
     const {
@@ -36,11 +41,11 @@ class PostList extends Component {
               <button className='btn mb-3 py-1'>{category}</button>
               </Link>
               <div className='ml-auto'>
-                <FaTrash
-                  className='text-muted mr-3'
-                  onClick={this.handleDelete}
-                />
                 <FaPen
+                  className='text-muted mr-3'
+                  onClick={this.handleEdit}
+                />
+                <FaTrash
                   className='text-muted mr-3'
                   onClick={this.handleDelete}
                 />
@@ -50,13 +55,10 @@ class PostList extends Component {
                 />
               </div>
             </div>
-            <div className='row'>
-              <p className='card-author text-muted mb-0'>By {author}</p>
-            </div>
           </div>
-          <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
           <Link to={`/${category}/${id}`}>
-          <h5 className='card-title'>{title}</h5>
+          <h5 className='card-title mb-1'>{title}</h5>
+          <p className='card-author text-muted'>By {author} at {formatDate(timestamp)}</p>
           </Link>
           <p className='card-text text-muted'>{body}</p>
           <hr></hr>

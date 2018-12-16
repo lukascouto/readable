@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { TiHeartOutline } from 'react-icons/ti/index'
+import { FaTrash, FaPen, FaShareAlt, FaRegHeart, FaRegComment } from 'react-icons/fa'
 import { handleDeleteComment, handleAddVote } from '../actions/comments'
 import FormComment from './FormComment'
 
@@ -53,37 +53,35 @@ class CommentsList extends Component {
       <div>
         <div className='card-body'>
           <hr className='mt-0'></hr>
-
-          <button
-            className='btn btn-light'
-            onClick={this.handleDelete}
-          >
-            Excluir
-          </button>
-
-          <button
-            className='btn btn-light'
-            onClick={this.handleEdit}
-          >
-            Editar
-          </button>
-
-          <p className='card-author text-muted mr-1 mb-0'>by {author}</p>
-          <p className='card-timestamp text-muted'>{formatDate(timestamp)}</p>
-          <p className='card-text'>{body}</p>
           <div className='container'>
             <div className='row'>
-                <TiHeartOutline
-                  color='#B06AB3'
-                  className='heart-up'
-                  onClick={() => this.handleVote("upVote")}
+              <p className='card-author text-muted'>By {author} at {formatDate(timestamp)}</p>
+              <div className='ml-auto'>
+                <FaPen
+                  className='text-muted mr-3'
+                  onClick={this.handleEdit}
                 />
-                <p className='mx-2 text-muted'>{voteScore}</p>
-                <TiHeartOutline
-                  color='#B06AB3'
-                  className='heart-down'
-                  onClick={() => this.handleVote("downVote")}
+                <FaTrash
+                  className='text-muted mr-3'
+                  onClick={this.handleDelete}
                 />
+              </div>
+            </div>
+          </div>
+          <p className='card-text text-muted'>{body}</p>
+          <div className='container'>
+            <div className='row'>
+              <FaRegHeart
+                color='#B06AB3'
+                className='heart-up'
+                onClick={() => this.handleVote("upVote")}
+              />
+              <p className='mx-2 text-muted'>{voteScore}</p>
+              <FaRegHeart
+                color='#B06AB3'
+                className='heart-down'
+                onClick={() => this.handleVote("downVote")}
+              />
             </div>
           </div>
         </div>

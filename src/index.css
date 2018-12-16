@@ -23,10 +23,6 @@ Link {
   text-decoration-line: none;
 }
 
-span {
-  color: #B06AB3;
-}
-
 .btn-primary {
   text-transform: uppercase;
   font-weight: 500;
@@ -90,9 +86,13 @@ h4 {
 
 .card {
   border: none;
+  -webkit-box-shadow: 0px 43px 112px -90px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 43px 112px -90px rgba(0,0,0,0.6);
+  box-shadow: 0px 43px 112px -90px rgba(0,0,0,0.6);  /*
   -webkit-box-shadow: 0px 0px 39px -4px rgba(69,104,220,0.3);
   -moz-box-shadow: 0px 0px 39px -4px rgba(69,104,220,0.3);
   box-shadow: 0px 0px 39px -4px rgba(69,104,220,0.3);
+  */
 }
 
 .card-title {
@@ -113,7 +113,7 @@ h4 {
 
 .card-author, .card-timestamp {
   font-size: .85rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .card-category {
