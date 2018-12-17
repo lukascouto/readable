@@ -1,4 +1,4 @@
-import { RECEIVE_POSTS, ADD_POST, VOTE_POST, EDIT_POST, REMOVE_POST } from '../actions/posts'
+import { RECEIVE_POSTS, ADD_POST, VOTE_POST, EDIT_POST, OPTION_POST, ORDER_POST, REMOVE_POST } from '../actions/posts'
 
 export default function posts (state = {}, action) {
 	switch (action.type) {

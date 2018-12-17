@@ -3,80 +3,31 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Post from './Post'
 import { handleGetAllPosts } from '../actions/posts'
+import { handleOptionPost, handleOrderPost } from '../actions/filter'
 import { GoRocket } from 'react-icons/go'
 
 class Dashboard extends Component {
-
-  state = {
-    filter: 'date',
-    order: 'crescente',
-    indexes: []
-  }
 
   componentDidMount () {
 		this.props.dispatch(handleGetAllPosts(this.props.category))
 	}
 
 	componentDidUpdate (prevProps) {
-    /*
-
-    if (filter === 'date' && order === 'crescente') {
-      //postIndexes = Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp)
-    }
-
-    if (filter === 'date' && order === 'decrescente') {
-      //postIndexes = Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp)
-    }
-
-    if (filter === 'vote' && order === 'crescente') {
-      //postIndexes = Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore)
-    }
-
-    if (filter === 'vote' && order === 'decrescente') {
-      //postIndexes = Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore)
-    }
-
-    */
-
 		if (this.props.category !== prevProps.category) {
 			this.props.dispatch(handleGetAllPosts(this.props.category))
 		}
 	}
 
-  changeFilter = (event) => {
-    this.setState({
-      filter: event
-    })
+  changeOption = (event) => {
+    this.props.dispatch(handleOptionPost(event))
   }
 
   changeOrder = (event) => {
-    const { posts } = this.props
-    if (event === 'crescente') {
-      this.setState({
-        indexes: Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp)
-      })
-      console.log(this.state.indexes)
-    }
-
-    if ( event === 'decrescente') {
-      this.setState({
-        indexes: Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp)
-      })
-      console.log(this.state.indexes)
-    }
+    this.props.dispatch(handleOrderPost(event))
   }
-/*
-  changeOrder = (event) => {
-    this.setState({
-      order: event
-    })
-  }
-*/
 
   render() {
-
     const { posts, postIndexes } = this.props
-    const { indexes } = this.state
 
     if (posts.length === 0) {
       return (
@@ -102,7 +53,7 @@ class Dashboard extends Component {
                 <h6 className='pt-2'>Filter</h6>
                 <select
                     className='form-control col-5 ml-2 mb-3'
-                    onChange={(event) => this.changeFilter(event.target.value)}
+                    onChange={(event) => this.changeOption(event.target.value)}
                 >
                     <option value="filter" disabled>List by...</option>
                     <option value="date">Date</option>
@@ -110,7 +61,7 @@ class Dashboard extends Component {
                 </select>
               </div>
               <div className='row'>
-                <h6 className='pt-2'>Order by</h6>
+                <h6 className='pt-2'>Order</h6>
                 <select
                     className='form-control col-5 ml-2 mb-3'
                     onChange={(event) => this.changeOrder(event.target.value)}
@@ -123,9 +74,9 @@ class Dashboard extends Component {
           </div>
         </div>
         <ul>
-          {indexes.map((postIndex) => (
-            <li key={postIndex}>
-              <Post id={postIndex} />
+          {postIndexes.map((index) => (
+            <li key={index}>
+              <Post id={index} />
             </li>
           ))}
         </ul>
@@ -134,30 +85,34 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps ({ posts }, props) {
-
+function mapStateToProps ({ posts, filter }, props) {
   const { category } = props.match.params
 	const { pathname } = props.location
 
+  let indexes = []
+
+  if (filter.option === 'date' && filter.order === 'crescente') {
+    indexes = Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp)
+  }
+
+  if (filter.option === 'date' && filter.order === 'decrescente') {
+    indexes = Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp)
+  }
+
+  if (filter.option === 'vote' && filter.order === 'crescente') {
+    indexes = Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore)
+  }
+
+  if (filter.option === 'vote' && filter.order === 'decrescente') {
+    indexes = Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore)
+  }
 
   return {
-
-    // Ordem crescente
-    //postIndexes: Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp),
-
-    // Ordem decrescente
-    //postIndexes: Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp),
-
-    // Por voto crescente
-    //postIndexes: Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore),
-
-    // Por voto decrescente
-    //postIndexes: Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore),
-
-    postIndexes: Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp),
+    postIndexes: indexes,
     category,
   	pathname,
-    posts
+    posts,
+    filter
   }
 }
 

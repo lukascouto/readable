@@ -39,8 +39,8 @@ function editPost (post, body) {
 
 function removePost (id) {
   return {
-      type: REMOVE_POST,
-      id,
+    type: REMOVE_POST,
+    id,
   }
 }
 
