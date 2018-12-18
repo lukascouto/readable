@@ -29,7 +29,7 @@ class FormComment extends Component {
     e.preventDefault()
 
     const { body, author } = this.state
-    const { dispatch, comment, posts, id } = this.props
+    const { dispatch, comment, id } = this.props
 
     // Se existe um comentário, o dispatch é para editar o comentário e em seguida fechar o formulário
     // Caso contrário, significa que trata-se de um novo comentário
@@ -69,7 +69,7 @@ class FormComment extends Component {
               onChange={this.handleChange}
             />
             <button
-              className='btn btn-light'
+              className='btn btn-primary'
               onClick={() => this.onUpdateComment}
               type='submit'>
                 Comment

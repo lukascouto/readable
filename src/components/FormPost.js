@@ -39,22 +39,23 @@ class FormPost extends Component {
     return(
       <div>
         <form onSubmit={this.handleSubmit}>
-          <div className='"form-group"'>
-          <select
-            name="category"
-            onChange={this.handleChange}
-          >
-          {categories.length > 0 ? (
-            categories.map(category => (
-              <option
-                value={category.path}
-                key={category.name}
-              >
-                {category.name}
-              </option>
-            ))
-          ) : null}
-        </select>
+          <div className='form-group mb-5'>
+            <select
+              className='form-control mb-3'
+              name="category"
+              onChange={this.handleChange}
+            >
+              {categories.length > 0 ? (
+                categories.map(category => (
+                  <option
+                    value={category.path}
+                    key={category.name}
+                  >
+                    {category.name}
+                  </option>
+                ))
+              ) : null}
+            </select>
             <input
               className='form-control mb-3'
               placeholder="Your name"
@@ -72,7 +73,7 @@ class FormPost extends Component {
             <textarea
               className='form-control mb-3'
               rows='8'
-              placeholder="Type a comment..."
+              placeholder="Post..."
               name="body"
               value={body}
               onChange={this.handleChange}

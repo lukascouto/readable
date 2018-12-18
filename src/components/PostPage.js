@@ -59,7 +59,7 @@ class PostPage extends Component {
                   margin: '20px'
                   }}
                 />
-                <h2><span style={{color: '#B06AB3'}}>Wow! </span>No comments yet.</h2>
+                <h2><span style={{color: '#B06AB3'}}>Hey! </span>No comments yet.</h2>
                 <p>You can be the first! ;)</p>
               </div> : null
             }

@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { FaTrash, FaPen, FaShareAlt, FaRegHeart, FaRegComment } from 'react-icons/fa'
+import { FaTrash, FaPen, FaShareAlt, FaHeartbeat, FaHeart } from 'react-icons/fa'
 import { handleDeleteComment, handleAddVote } from '../actions/comments'
 import FormComment from './FormComment'
 
@@ -55,29 +55,31 @@ class CommentsList extends Component {
           <hr className='mt-0'></hr>
           <div className='container'>
             <div className='row'>
-              <p className='card-author text-muted'>By {author} at {formatDate(timestamp)}</p>
+              <p className='card-author text-muted'>By <strong>{author}</strong> at {formatDate(timestamp)}</p>
               <div className='ml-auto'>
-                <FaPen
-                  className='text-muted mr-3'
-                  onClick={this.handleEdit}
-                />
-                <FaTrash
-                  className='text-muted mr-3'
-                  onClick={this.handleDelete}
-                />
+                <div className='post-options pl-4'>
+                  <FaPen
+                    className='text-muted mr-3'
+                    onClick={this.handleEdit}
+                  />
+                  <FaTrash
+                    className='text-muted mr-3'
+                    onClick={this.handleDelete}
+                  />
+                </div>
               </div>
             </div>
           </div>
           <p className='card-text text-muted'>{body}</p>
           <div className='container'>
             <div className='row'>
-              <FaRegHeart
+              <FaHeartbeat
                 color='#B06AB3'
                 className='heart-up'
                 onClick={() => this.handleVote("upVote")}
               />
               <p className='mx-2 text-muted'>{voteScore}</p>
-              <FaRegHeart
+              <FaHeart
                 color='#B06AB3'
                 className='heart-down'
                 onClick={() => this.handleVote("downVote")}

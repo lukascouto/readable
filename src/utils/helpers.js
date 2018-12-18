@@ -1,13 +1,5 @@
-/*
-export function formatDate (timestamp) {
-  const d = new Date(timestamp)
-  const time = d.toLocaleTimeString('pt-br')
-  return time.substr(0, 5) + time.slice(-2) + ' | ' + d.toLocaleDateString()
-}
-*/
-
 export function formatDate(timestamp) {
-    var monthName = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+    var monthName = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
     var data = new Date(timestamp);
     var day = data.getDate();
     var month = data.getMonth();

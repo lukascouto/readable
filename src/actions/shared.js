@@ -5,8 +5,7 @@ import { handleOptionPost, handleOrderPost } from './filter'
 export function handleInitialData () {
   return (dispatch) => {
     dispatch(handleGetAllCategories())
-    dispatch(handleGetAllPosts())
     dispatch(handleOptionPost('date'))
-    dispatch(handleOrderPost('crescente'))
+    dispatch(handleOrderPost(true))
   }
 }
