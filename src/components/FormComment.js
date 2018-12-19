@@ -33,8 +33,8 @@ class FormComment extends Component {
 
     // Se existe um comentário, o dispatch é para editar o comentário e em seguida fechar o formulário
     // Caso contrário, significa que trata-se de um novo comentário
-    comment ? dispatch(handleEditComment(comment, body)) && this.props.onUpdateComment() :
-    dispatch(handleAddComment(body, author, id))
+    comment ? dispatch(handleEditComment(comment, body)) && this.props.onUpdateComment()
+            : dispatch(handleAddComment(body, author, id))
 
     this.setState(() => ({
       body: '',

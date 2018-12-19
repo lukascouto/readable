@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared'
 import Nav from './Nav'
 import Dashboard from './Dashboard'
+import LoadingBar from 'react-redux-loading'
 import PostPage from './PostPage'
 import FormPost from './FormPost'
 
@@ -11,20 +12,25 @@ class App extends Component {
   componentDidMount() {
     this.props.dispatch(handleInitialData())
   }
-  render() {
+  render(props) {
     return (
 
       //<PostPage match={{params: {id: [0]}}}/>
 
       <Router>
         <Fragment>
+          <LoadingBar />
           <Nav />
           <div className='container'>
-            <Route path='/' exact component={Dashboard} />
-            <Route path='/:category/' exact component={Dashboard} />
-            <Route path='/:category/:id' component={PostPage} />
-            <Route path='/new-post' exact component={FormPost} />
           </div>
+          {this.props.loading === true
+            ? null
+            : <div className='container'>
+                <Route path='/' exact component={Dashboard} />
+                <Route path='/:category/' exact component={Dashboard} />
+                <Route path='/:category/:id' exact component={PostPage} />
+                <Route path='/new-post' exact component={FormPost} />
+              </div>}
         </Fragment>
       </Router>
 
@@ -32,4 +38,11 @@ class App extends Component {
   }
 }
 
-export default connect()(App)
+function mapStateToProps ({ posts }) {
+
+  return {
+    loading: posts === null
+  }
+}
+
+export default connect(mapStateToProps)(App)

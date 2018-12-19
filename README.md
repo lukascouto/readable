@@ -1,44 +1,37 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Readable
 
-## Available Scripts
+Este projeto foi desenvolvido em React com Redux, consumindo uma API fornecida pela Udacity no Nanodegree Desenvolvedor React.
 
-In the project directory, you can run:
+Após seguir todos os passos para a instalação e inicialização do projeto, você será capaz de criar postagens, comentar em todas as postagens disponíveis, gerenciar as postagens e comentários com as opções de voto negativo/positivo e também editar/excluir qualquer conteúdo.
 
-### `npm start`
+- Este projeto foi criado com [Create React App](https://github.com/facebook/create-react-app).
+- Foi utilizado [Yarn](https://yarnpkg.com/pt-BR/) para gerenciar as dependências e rodar o projeto. Fique à vontade para utilizar o `npm`.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+# Servidor
 
-### `npm test`
+Esta API foi disponibilizada pela equipe da Udacity, sendo indispensável para rodar o projeto Readable.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+No terminal, acesse o diretório do projeto `readable-app` e siga os passos abaixo:
 
-### `npm run build`
+`cd api-server`
+`yarn install`
+`yarn start`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Para mais informações sobre esta API  [acesse](https://github.com/udacity/reactnd-project-readable-starter).
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Instalando as dependências
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Agora abra outro terminal e acesse o projeto `readable-app`.
 
-### `npm run eject`
+No diretório do projeto, rode o comando `npm` ou `yarn` para instalar todas as dependências necessárias:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`yarn install`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Iniciando o projeto
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Ainda no diretório do projeto, rode o comando `npm` ou `yarn` para iniciar:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```yarn start```
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Neste momento, o projeto deverá abrir na url: [http://localhost:3000](http://localhost:3000)

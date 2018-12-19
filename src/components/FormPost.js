@@ -1,23 +1,32 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { handleAddPost } from '../actions/posts'
+import { handleAddPost, handleEditPost } from '../actions/posts'
 
 class FormPost extends Component {
   state = {
     title: '',
     body: '',
     author: '',
-    category: ''
+    category: 'react',
+    toHome: false,
+  }
+
+  componentDidMount() {
+    const { post } = this.props
+
+    if (post) {
+      this.setState({
+        title: post.title,
+        body: post.body,
+        author: post.author
+      })
+    }
   }
 
   // Pega o name que for igual ao state e repassa o value
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
-    console.log(this.state.category)
-  }
-
-  handleChangeCategory = (e) => {
-    console.log(e.target.value)
   }
 
   handleSubmit = (e) => {
@@ -29,40 +38,52 @@ class FormPost extends Component {
     e.preventDefault()
 
     const { title, body, author, category } = this.state
-    const { dispatch } = this.props
+    const { dispatch, post, id } = this.props
 
-    dispatch(handleAddPost(title, body, author, category))
+    post ? dispatch(handleEditPost(post, title, body)) && this.props.onUpdatePost()
+         : dispatch(handleAddPost(title, body, author, category))
+
+    this.setState({ toHome: post ? false : true })
   }
+
   render() {
-    const { title, body, author } = this.state
-    const { categories } = this.props
+
+    const { title, body, author, toHome, toPost } = this.state
+    const { categories, post, id , postIndex} = this.props
+
+    if (toHome === true) {
+      return <Redirect to='/'/>
+    }
+
     return(
       <div>
         <form onSubmit={this.handleSubmit}>
           <div className='form-group mb-5'>
-            <select
-              className='form-control mb-3'
-              name="category"
-              onChange={this.handleChange}
-            >
-              {categories.length > 0 ? (
-                categories.map(category => (
-                  <option
-                    value={category.path}
-                    key={category.name}
-                  >
-                    {category.name}
-                  </option>
-                ))
-              ) : null}
-            </select>
-            <input
-              className='form-control mb-3'
-              placeholder="Your name"
-              name="author"
-              value={author}
-              onChange={this.handleChange}
-            />
+            {post ? <p className='text-muted'>Category <strong>{post.category}</strong> | Author <strong>{author}</strong></p>
+                  : <select
+                      className='form-control mb-3'
+                      name="category"
+                      onChange={this.handleChange}
+                    >
+                      {categories.length > 0 ? (
+                        categories.map(category => (
+                          <option
+                            value={category.path}
+                            key={category.name}
+                          >
+                            {category.name}
+                          </option>
+                        ))
+                      ) : null}
+                    </select>}
+            {post ? null
+                  : <input
+                      className='form-control mb-3'
+                      placeholder="Your name"
+                      name="author"
+                      value={author}
+                      onChange={this.handleChange}
+                    />}
             <input
               className='form-control mb-3'
               placeholder="Title"
@@ -81,7 +102,7 @@ class FormPost extends Component {
             <button
               className='btn btn-primary'
               type='submit'>
-                Post
+                {post ? 'Edit' : 'Post'}
             </button>
           </div>
         </form>
@@ -90,10 +111,13 @@ class FormPost extends Component {
   }
 }
 
-function mapStateToProps ({ categories }) {
+function mapStateToProps ({ categories, posts }, { id }) {
+  const post = posts[id]
 
   return {
-    categories
+    categories,
+    post,
+    id
   }
 }
 

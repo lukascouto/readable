@@ -11,11 +11,8 @@ class Nav extends Component {
 
 		return (
 			<div>
-
 				<div className='banner'>
-
 					<div className='container'>
-
 						<div className='row'>
 						{/*
 							<img
@@ -40,16 +37,10 @@ class Nav extends Component {
 							/>
 							</Link>
 						</div>
-
 					</div>
-
 				</div>
-
-
 	      <nav className="navbar navbar-expand navbar-dark bg-white mb-4 mt-4">
-
 	        <div className="navbar-nav my-2 mx-auto">
-
 	          {categories.length > 0 ? (
 	            categories.map(category => (
 	              <NavLink
@@ -63,10 +54,7 @@ class Nav extends Component {
 	            ))
 						)  : null}
 	        </div>
-
 	      </nav>
-
-
 			</div>
 		)
 	}

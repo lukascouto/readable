@@ -2,34 +2,54 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
 import { FaTrash, FaPen, FaShareAlt, FaHeartbeat, FaHeart, FaComment } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { NavLink, Link, Redirect } from 'react-router-dom'
 import { handleAddVote, handleDeletePost } from '../actions/posts'
+import FormPost from './FormPost'
 
 class PostList extends Component {
 
+  state = {
+    postSelected: false
+  }
+
   handleVote = (option) => {
     const { dispatch, post } = this.props
-
     dispatch(handleAddVote( post, option ))
   }
 
   handleEdit = () => {
-    console.log('Editou')
+    this.setState({ postSelected: true })
+  }
+
+  handleEdited = () => {
+    this.setState({ postSelected: false })
   }
 
   handleDelete = () => {
     const { dispatch, post } = this.props
-
     dispatch(handleDeletePost(post))
   }
 
   render() {
 
-    const { post } = this.props
+    const { post, postIndex } = this.props
 
     const {
       id, author, category, timestamp, title, body, voteScore, commentCount
     } = post
+
+
+    if (this.state.postSelected) {
+      return (
+        <div className='container mt-5'>
+          <h3 className='text-center text-muted mb-5'>Edit Post</h3>
+          <FormPost
+            id={postIndex}
+            onUpdatePost={this.handleEdited}
+          />
+        </div>
+      )
+    }
 
     return (
       <div className='card mt-2'>
@@ -93,6 +113,7 @@ function mapStateToProps ({ posts }, { id }) {
   const post = posts[id]
 
   return {
+    postIndex: id,
     post,
   }
 }

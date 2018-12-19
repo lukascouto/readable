@@ -1,5 +1,6 @@
 import { getAllPosts, createPost, createVotePost, updatePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const ADD_POST = 'ADD_POST'
@@ -45,10 +46,12 @@ function removePost (id) {
 }
 
 export function handleGetAllPosts (category) {
-	return dispatch => {
+	return (dispatch) => {
+		dispatch(showLoading())
 		return getAllPosts(category)
 			.then(posts => {
 				dispatch(receivePosts(posts))
+				dispatch(hideLoading())
 		})
 	}
 }

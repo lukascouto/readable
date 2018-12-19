@@ -26,7 +26,7 @@ class Filter extends Component {
         <div className='card-body mb-3'>
           <div className='container'>
             <div className='row'>
-              <div className='col-4 pl-0'>
+              <div className='col-4 pl-0 pr-0'>
                 <select
                     className='form-control'
                     onChange={(event) => this.changeOption(event.target.value)}
@@ -37,14 +37,14 @@ class Filter extends Component {
                     <option value="comments">Comments</option>
                 </select>
               </div>
-              <div className='col-4 pl-0'>
+              <div className='col-2 pl-0'>
                 <button
                   className='btn btn-primary'
                   onClick={this.changeOrder}
                 > {this.state.order === true ? 'Asc' : 'Desc'}
                 </button>
               </div>
-              <div className='col-4 pl-0 pr-0'>
+              <div className='col-6 pl-0 pr-0'>
                 <input
                   className='form-control'
                   placeholder="Search..."
