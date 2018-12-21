@@ -4,9 +4,12 @@
   "private": true,
   "dependencies": {
     "form-serialize": "^0.7.2",
+    "markdown-to-jsx": "^6.9.0",
     "react": "^16.6.3",
+    "react-animated-css": "^1.0.4",
     "react-dom": "^16.6.3",
     "react-icons": "^3.2.2",
+    "react-markdown": "^4.0.4",
     "react-redux": "^5.1.1",
     "react-redux-loading": "^1.0.1",
     "react-router-dom": "^4.3.1",

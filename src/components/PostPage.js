@@ -1,31 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleGetAllPosts } from '../actions/posts'
 import { handleGetComments } from '../actions/comments'
 import { GoRocket } from 'react-icons/go'
 import { TiWeatherStormy } from 'react-icons/ti'
-import { showLoading, hideLoading } from 'react-redux-loading'
-import LoadingBar from 'react-redux-loading'
 import Post from './Post'
 import Comment from './Comment'
 import FormComment from './FormComment'
 
 class PostPage extends Component {
 
-  componentDidMount() {
-    const { id } = this.props
-		this.props.dispatch(handleGetAllPosts())
-    this.props.dispatch(handleGetComments(id))
+  componentDidMount () {
+    this.props.dispatch(handleGetComments(this.props.id))
 	}
 
   render() {
+    const { id, post, commentIds } = this.props
 
-    const { id, comments, commentIds, postIndex } = this.props
-
-    // Ao acessar a url da postagem deletada,
-    // postIndex recebe -1 por não ter encontrado o post no array.
-    // Então, renderiza esta mensagem de página não encontrada.
-    if (postIndex === -1) {
+    if (post === undefined) {
       return (
         <div className='container text-center text-muted mt-5'>
           <TiWeatherStormy style={{
@@ -42,18 +33,16 @@ class PostPage extends Component {
 
     return (
       <div>
-        {/* Abre a postagem completa quando a posição da postagem é recuperada (diferente de -1) */}
-        {postIndex !== -1 ? <Post id={postIndex} /> : null }
+        <Post id={id} />
         {/* Todos os comentários da postagem completa */}
         <div className='card mt-2'>
           <div className='container'>
             <h4 className='text-muted mt-3 mb-4'><span>| </span>Comments ({commentIds.length})</h4>
-            {/* Formulário para criar um novo comentário */}
             <FormComment id={id} />
           </div>
           <div>
             {/* Verifica se o array de comentários está vazio para retornar uma mensagem */}
-            {comments.length === 0 ?
+            {commentIds.length === 0 ?
               <div className='container text-center text-muted mt-5'>
                 <GoRocket style={{
                   fontSize: '100px',
@@ -79,22 +68,18 @@ class PostPage extends Component {
   }
 }
 
-function mapStateToProps ({ posts, comments }, props) {
+function mapStateToProps ({ comments, posts }, props) {
   const { id } = props.match.params
+  const post = posts[id]
 
-  // Recupera a posição de um post no array para abrir o post correto
-  let currentPostIndex = -1;
-  Object.keys(posts).forEach(index => {
-    if(posts[index].id === id)
-      currentPostIndex = index
-  })
+  let keys = Object.keys(comments)
+  let filtered_keys = keys.filter(key => !comments[key].deleted).sort((a,b) => comments[b].timestamp - comments[a].timestamp)
 
   return {
     id,
-    comments,
-    postIndex: currentPostIndex,
-    commentIds: Object.keys(comments)
-        .sort((a,b) => comments[b].timestamp - comments[a].timestamp)
+    post,
+    commentIds: filtered_keys
+
   }
 }
 

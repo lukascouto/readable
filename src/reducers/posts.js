@@ -3,25 +3,46 @@ import { RECEIVE_POSTS, ADD_POST, VOTE_POST, EDIT_POST, REMOVE_POST } from '../a
 export default function posts (state = {}, action) {
 	switch (action.type) {
 		case RECEIVE_POSTS :
-			return action.posts
+			const manipulado = action.posts.reduce((novoObjeto, item) => {
+			novoObjeto[item.id] = item;
+			return novoObjeto;
+			}, {})
+			return manipulado
 		case ADD_POST :
 			return {
 				...state,
 				[action.post.id]: action.post
 			}
 		case VOTE_POST :
-			return state.map((post) => post.id !== action.post.id ? post :
-				Object.assign({}, post,
-					action.option === undefined ?
-						action.post :
-						action.option === 'upVote' ? { voteScore: post.voteScore+1 } :
-						{ voteScore: post.voteScore-1 }
-					))
+			return {
+        ...state,
+        [action.post.id]: {
+          ...state[action.post.id],
+					...action.option === 'upVote' ?
+						{ voteScore: action.post.voteScore+1 } : { voteScore: action.post.voteScore-1 }
+        }
+      }
 		case EDIT_POST :
-			return state.map((post) => post.id !== action.post.id ? post :
-				Object.assign({}, post, { title: action.body.title, body: action.body.body }))
+			return {
+				...state,
+				[action.id]: {
+					...state[action.id],
+					...action.id = {
+						title: action.body.title,
+						body: action.body.body
+					}
+				}
+			}
 		case REMOVE_POST :
-			return state.filter((post) => post.id !== action.id)
+			return {
+				...state,
+				[action.id]: {
+					...state[action.id],
+					...action.id = {
+						deleted: true
+					}
+				}
+			}
 		default :
 			return state
 	}

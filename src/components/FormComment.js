@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { formatDate } from '../utils/helpers'
 import { handleAddComment, handleEditComment } from '../actions/comments'
 
 class FormComment extends Component {
@@ -42,6 +43,12 @@ class FormComment extends Component {
     }))
   }
 
+  handleEditedCanceled = (e) => {
+    e.preventDefault()
+
+    this.props.onUpdateComment()
+  }
+
   render () {
 
     const { author, body } = this.state
@@ -59,7 +66,7 @@ class FormComment extends Component {
                 value={author}
                 onChange={this.handleChange}
               />
-              : <p>{author}</p> }
+              : <p className='card-author text-muted'>By <strong>{comment.author}</strong> at {formatDate(comment.timestamp)}</p>}
             <textarea
               className='form-control mb-3'
               rows='3'
@@ -72,8 +79,14 @@ class FormComment extends Component {
               className='btn btn-primary'
               onClick={() => this.onUpdateComment}
               type='submit'>
-                Comment
+                {comment ? 'Edit' : 'Comment'}
             </button>
+            {comment ? <button
+                      className='ml-1 btn btn-secondary'
+                      onClick={this.handleEditedCanceled}>
+                        Cancel
+                    </button>
+                  : null}
           </div>
         </form>
       </div>

@@ -13,8 +13,6 @@ class Filter extends Component {
   }
 
   changeOrder = () => {
-    //ASC
-    //DESC
     this.setState({order: !this.state.order}, () => {
       this.props.dispatch(handleOrderPost(this.state.order))
     })
@@ -26,7 +24,7 @@ class Filter extends Component {
         <div className='card-body mb-3'>
           <div className='container'>
             <div className='row'>
-              <div className='col-4 pl-0 pr-0'>
+              <div className='col-sm-3 col-3 pl-0 pr-0'>
                 <select
                     className='form-control'
                     onChange={(event) => this.changeOption(event.target.value)}
@@ -37,9 +35,9 @@ class Filter extends Component {
                     <option value="comments">Comments</option>
                 </select>
               </div>
-              <div className='col-2 pl-0'>
+              <div className='col-sm-3 col-3 pl-0'>
                 <button
-                  className='btn btn-primary'
+                  className='form-control btn btn-primary'
                   onClick={this.changeOrder}
                 > {this.state.order === true ? 'Asc' : 'Desc'}
                 </button>

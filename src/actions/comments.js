@@ -1,6 +1,5 @@
 import { getComments, createComment, createVoteComment, updateComment, deleteComment } from '../utils/api'
 import { generateUID } from '../utils/helpers'
-import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
@@ -15,10 +14,11 @@ function receiveComments (comments) {
   }
 }
 
-function addComment (comment) {
+function addComment (comment, posts) {
   return {
     type: ADD_COMMENT,
     comment,
+    posts
   }
 }
 
@@ -30,10 +30,10 @@ function addVote (comment, option) {
   }
 }
 
-function editComment (comment, body) {
+function editComment (id, body) {
   return {
     type: EDIT_COMMENT,
-    comment,
+    id,
     body
   }
 }
@@ -55,10 +55,8 @@ export function handleGetComments (id) {
 }
 
 export function handleAddComment (body, author, id) {
-  return (dispatch) => {
-
-    dispatch(showLoading())
-
+  return (dispatch, getState) => {
+    const { posts } = getState()
     return createComment({
       id: generateUID(),
       timestamp: Date.now(),
@@ -66,8 +64,7 @@ export function handleAddComment (body, author, id) {
       author: author,
       parentId: id
     })
-      .then(comment => dispatch(addComment(comment)))
-      .then(() => dispatch(hideLoading()))
+      .then(comment => dispatch(addComment(comment, posts)))
   }
 }
 
@@ -89,7 +86,7 @@ export function handleAddVote (comment, option) {
 export function handleEditComment (comment, body) {
   return (dispatch) => {
     // Otimista
-    dispatch(editComment(comment, { timestamp: Date.now(), body }))
+    dispatch(editComment(comment.id, { timestamp: Date.now(), body }))
     // API
     return updateComment(comment.id, { timestamp: Date.now(), body })
     // Retorna o comentário anterior ao erro

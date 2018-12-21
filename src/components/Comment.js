@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
-import { FaTrash, FaPen, FaShareAlt, FaHeartbeat, FaHeart } from 'react-icons/fa'
+import { FaTrash, FaPen, FaHeartbeat, FaHeart } from 'react-icons/fa'
 import { handleDeleteComment, handleAddVote } from '../actions/comments'
 import FormComment from './FormComment'
 
@@ -24,13 +24,14 @@ class CommentsList extends Component {
 
   // Seta um valor falso após editar um comentário
   // Não passa no if do render e com isso fecha o FormComment
-  handleEdited = () => {
+  handleEditedCanceled = () => {
     this.setState({ commentSelected: false })
   }
 
   handleDelete = () => {
     const { dispatch, comment } = this.props
     dispatch(handleDeleteComment(comment))
+    //console.log('Comentário deletado:', comment)
   }
 
   render() {
@@ -40,10 +41,10 @@ class CommentsList extends Component {
     // Condição para abrir o formulário para edição de comentário
     if (this.state.commentSelected) {
       return (
-        <div className='container mt-5'>
+        <div className='container container-edit-post-comment my-5 p-3'>
           <FormComment
             id={id}
-            onUpdateComment={this.handleEdited}
+            onUpdateComment={this.handleEditedCanceled}
           />
         </div>
       )

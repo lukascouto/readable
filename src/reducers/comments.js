@@ -3,27 +3,55 @@ import { RECEIVE_COMMENTS, ADD_COMMENT, VOTE_COMMENT, EDIT_COMMENT, REMOVE_COMME
 export default function comments (state = {}, action) {
 	switch (action.type) {
 		case RECEIVE_COMMENTS :
-			return action.comments
+			const manipulado = action.comments.reduce((novoObjeto, item) => {
+			novoObjeto[item.id] = item;
+			return novoObjeto;
+			}, {})
+			return manipulado
 		case ADD_COMMENT :
-			return state.concat([action.comment])
+			console.log('State: ')
+			return {
+				...state,
+				[action.comment.id]: action.comment,
+				[action.posts]: {
+					...state[action.comment.parentId],
+					...action.posts.id = {
+						commentCount: action.posts.commentCount+1
+					}
+				}
+
+
+			}
 		case VOTE_COMMENT :
-		/*
-			1. Retorna todos os comentários diferentes do id passado
-			2. Verifica se houve erro no banco (option === undefined), em caso de erro, retorna o voto ao estado atual
-			3. Verifica se o voto foi upVote ou diferente (downVote) e atualiza o voteScore
-		*/
-			return state.map((comment) => comment.id !== action.comment.id ? comment :
-        Object.assign({}, comment,
-					action.option === undefined ?
-						action.comment :
-						action.option === 'upVote' ? { voteScore: comment.voteScore+1 } :
-						{ voteScore: comment.voteScore-1 }
-					))
+			return {
+				...state,
+				[action.comment.id]: {
+					...state[action.comment.id],
+					...action.option === 'upVote' ?
+						{ voteScore: action.comment.voteScore+1 } : { voteScore: action.comment.voteScore-1 }
+				}
+			}
 		case EDIT_COMMENT :
-			return state.map((comment) => comment.id !== action.comment.id ? comment :
-				Object.assign({}, comment, { timestamp: action.body.timestamp, body: action.body.body }))
+			return {
+				...state,
+				[action.id]: {
+					...state[action.id],
+					...action.id = {
+						timestamp: action.body.timestamp,
+						body: action.body.body
+					}
+				}
+			}
 		case REMOVE_COMMENT :
-			return state.filter((comment) => comment.id !== action.id)
+			return {
+				...state,
+				[action.id]: {
+					...state[action.id],
+					...action.id = {
+						deleted: true
+					}
+				}
+			}
 		default :
 			return state
 	}

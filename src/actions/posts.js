@@ -1,6 +1,5 @@
 import { getAllPosts, createPost, createVotePost, updatePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
-import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const ADD_POST = 'ADD_POST'
@@ -30,10 +29,10 @@ function addVote (post, option) {
   }
 }
 
-function editPost (post, body) {
+function editPost (id, body) {
   return {
     type: EDIT_POST,
-    post,
+    id,
     body
   }
 }
@@ -47,11 +46,9 @@ function removePost (id) {
 
 export function handleGetAllPosts (category) {
 	return (dispatch) => {
-		dispatch(showLoading())
 		return getAllPosts(category)
 			.then(posts => {
 				dispatch(receivePosts(posts))
-				dispatch(hideLoading())
 		})
 	}
 }
@@ -90,7 +87,7 @@ export function handleAddVote (post, option) {
 export function handleEditPost (post, title, body) {
   return (dispatch) => {
     // Otimista
-    dispatch(editPost(post, { title, body }))
+    dispatch(editPost(post.id, { title, body }))
     // API
     return updatePost(post.id, { title, body })
     // Retorna o comentário anterior ao erro

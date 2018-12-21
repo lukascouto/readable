@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import Filter from './Filter'
 import Post from './Post'
 import { GoRocket } from 'react-icons/go'
+import { Animated } from "react-animated-css";
 import { handleGetAllPosts } from '../actions/posts'
 
 class Dashboard extends Component {
-
-  componentDidMount () {
-		this.props.dispatch(handleGetAllPosts(this.props.category))
-	}
 
 	componentDidUpdate (prevProps) {
 		if (this.props.category !== prevProps.category) {
@@ -18,7 +15,7 @@ class Dashboard extends Component {
 	}
 
   render() {
-    const { posts, pathname, postIndexes } = this.props
+    const { posts, pathname, postIds } = this.props
 
     if (posts.length === 0 && pathname !== '/new-post') {
       return (
@@ -33,15 +30,19 @@ class Dashboard extends Component {
     return (
       <div>
         {pathname !== '/new-post' ?
-        <Filter />
-        : null }
-        <ul>
-          {postIndexes.map((index) => (
-            <li key={index}>
-              <Post id={index} />
-            </li>
-          ))}
-        </ul>
+					<div>
+		        <Filter />
+						<Animated animationIn="fadeInLeft" isVisible={true}>
+		        <ul>
+		          {postIds.map((id) => (
+		            <li key={id}>
+		              <Post id={id} />
+		            </li>
+		          ))}
+		        </ul>
+		      </Animated>
+				</div>
+			: null}
       </div>
     )
   }
@@ -51,26 +52,28 @@ function mapStateToProps ({ posts, filter }, props) {
   const { category } = props.match.params
 	const { pathname } = props.location
 
-  let indexes = []
+  let ids = []
 
   if (filter.option === 'date') {
     filter.order === true ?
-      indexes = Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp) :
-      indexes = Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp)
+      ids = Object.keys(posts).sort((a,b) => posts[b].timestamp - posts[a].timestamp) :
+      ids = Object.keys(posts).sort((a,b) => posts[a].timestamp - posts[b].timestamp)
   }
   if (filter.option === 'vote') {
     filter.order === true ?
-      indexes = Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore) :
-      indexes = Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore)
+      ids = Object.keys(posts).sort((a,b) => posts[a].voteScore - posts[b].voteScore) :
+      ids = Object.keys(posts).sort((a,b) => posts[b].voteScore - posts[a].voteScore)
   }
   if (filter.option === 'comments') {
     filter.order === true ?
-      indexes = Object.keys(posts).sort((a,b) => posts[b].commentCount - posts[a].commentCount) :
-      indexes = Object.keys(posts).sort((a,b) => posts[a].commentCount - posts[b].commentCount)
+      ids = Object.keys(posts).sort((a,b) => posts[b].commentCount - posts[a].commentCount) :
+      ids = Object.keys(posts).sort((a,b) => posts[a].commentCount - posts[b].commentCount)
   }
 
+  let filtered_keys = ids.filter(id => !posts[id].deleted)
+
   return {
-    postIndexes: indexes,
+    postIds: filtered_keys,
     category,
   	pathname,
     posts,

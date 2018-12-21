@@ -38,7 +38,7 @@ class FormPost extends Component {
     e.preventDefault()
 
     const { title, body, author, category } = this.state
-    const { dispatch, post, id } = this.props
+    const { dispatch, post } = this.props
 
     post ? dispatch(handleEditPost(post, title, body)) && this.props.onUpdatePost()
          : dispatch(handleAddPost(title, body, author, category))
@@ -46,10 +46,18 @@ class FormPost extends Component {
     this.setState({ toHome: post ? false : true })
   }
 
+  handleEditedCanceled = (e) => {
+    e.preventDefault()
+
+    this.props.post ? this.props.onUpdatePost()
+                    : this.setState({ toHome: true })
+
+  }
+
   render() {
 
-    const { title, body, author, toHome, toPost } = this.state
-    const { categories, post, id , postIndex} = this.props
+    const { title, body, author, toHome } = this.state
+    const { categories, post } = this.props
 
     if (toHome === true) {
       return <Redirect to='/'/>
@@ -59,7 +67,7 @@ class FormPost extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <div className='form-group mb-5'>
-            {post ? <p className='text-muted'>Category <strong>{post.category}</strong> | Author <strong>{author}</strong></p>
+            {post ? <p className='text-muted mb-5'>Author: <strong>{author}</strong> | Category: <strong>{post.category}</strong></p>
                   : <select
                       className='form-control mb-3'
                       name="category"
@@ -103,6 +111,11 @@ class FormPost extends Component {
               className='btn btn-primary'
               type='submit'>
                 {post ? 'Edit' : 'Post'}
+            </button>
+            <button
+              className='ml-1 btn btn-secondary'
+              onClick={this.handleEditedCanceled}>
+                Cancel
             </button>
           </div>
         </form>

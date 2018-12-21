@@ -11,16 +11,32 @@ h2 {
   font-weight: 200;
 }
 
-.btn-primary {
+.container-edit-post-comment {
+  -webkit-box-shadow: 0px 0px 132px -17px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 0px 132px -17px rgba(0,0,0,0.6);
+  box-shadow: 0px 0px 132px -17px rgba(0,0,0,0.6);
+}
+
+.btn {
   padding: 13px 30px;
-  background: #4568DC;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #B06AB3, #4568DC);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #B06AB3, #4568DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   -webkit-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.4);
   -moz-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.4);
   box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.4);
   color: #fff;
   border: none;
+}
+
+.btn-primary {
+  background: #4568DC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #B06AB3, #4568DC) !important;  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #B06AB3, #4568DC) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.4) !important;
+}
+
+.btn-secondary {
+  padding: 13px 30px;
+  background: #c0392b;
+  color: #fff !important;
 }
 
 .banner {
