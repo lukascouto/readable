@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleGetComments } from '../actions/comments'
+import { handleGetAllPosts } from '../actions/posts'
 import { GoRocket } from 'react-icons/go'
 import { TiWeatherStormy } from 'react-icons/ti'
 import Post from './Post'
@@ -11,12 +12,13 @@ class PostPage extends Component {
 
   componentDidMount () {
     this.props.dispatch(handleGetComments(this.props.id))
+    this.props.dispatch(handleGetAllPosts(this.props.category))
 	}
 
   render() {
     const { id, post, commentIds } = this.props
 
-    if (post === undefined) {
+    if (!post) {
       return (
         <div className='container text-center text-muted mt-5'>
           <TiWeatherStormy style={{
@@ -34,7 +36,6 @@ class PostPage extends Component {
     return (
       <div>
         <Post id={id} />
-        {/* Todos os comentários da postagem completa */}
         <div className='card mt-2'>
           <div className='container'>
             <h4 className='text-muted mt-3 mb-4'><span>| </span>Comments ({commentIds.length})</h4>

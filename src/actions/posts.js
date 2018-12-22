@@ -1,5 +1,7 @@
 import { getAllPosts, createPost, createVotePost, updatePost, deletePost } from '../utils/api'
 import { generateUID } from '../utils/helpers'
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import { handleLoading } from './loading'
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const ADD_POST = 'ADD_POST'
@@ -46,15 +48,18 @@ function removePost (id) {
 
 export function handleGetAllPosts (category) {
 	return (dispatch) => {
+		dispatch(handleLoading(true))
 		return getAllPosts(category)
 			.then(posts => {
 				dispatch(receivePosts(posts))
+				dispatch(handleLoading(false))
 		})
 	}
 }
 
 export function handleAddPost (title, body, author, category, id) {
   return (dispatch) => {
+		dispatch(showLoading())
     return createPost({
       id: generateUID(),
       timestamp: Date.now(),
@@ -65,6 +70,7 @@ export function handleAddPost (title, body, author, category, id) {
     })
       .then(post => {
         dispatch(addPost(post))
+				dispatch(hideLoading())
       })
   }
 }
@@ -86,10 +92,12 @@ export function handleAddVote (post, option) {
 
 export function handleEditPost (post, title, body) {
   return (dispatch) => {
+		dispatch(showLoading())
     // Otimista
     dispatch(editPost(post.id, { title, body }))
     // API
     return updatePost(post.id, { title, body })
+			.then(dispatch(hideLoading()))
     // Retorna o comentário anterior ao erro
     .catch(() => {
       dispatch(addPost(post))
@@ -100,12 +108,14 @@ export function handleEditPost (post, title, body) {
 
 export function handleDeletePost (post) {
 	return (dispatch) => {
+		dispatch(showLoading())
     // Atualização Otimista
     // Passa impressão que o item foi atualizado instantaneamente
     // Primeiro remove o item da UI
     dispatch(removePost(post.id))
     // Em seguida tenta remover do banco de dados chamando a API
 		return deletePost(post.id)
+			.then(dispatch(hideLoading()))
       // Se houver erro para remover no banco de dados
       // O item é adicionado novamente à UI
       .catch(() => {

@@ -5,8 +5,14 @@ import Post from './Post'
 import { GoRocket } from 'react-icons/go'
 import { Animated } from "react-animated-css";
 import { handleGetAllPosts } from '../actions/posts'
+import LoadingScreen from 'react-loading-screen'
+import Loader from 'react-loader-spinner'
 
 class Dashboard extends Component {
+
+	componentDidMount () {
+		this.props.dispatch(handleGetAllPosts(this.props.category))
+	}
 
 	componentDidUpdate (prevProps) {
 		if (this.props.category !== prevProps.category) {
@@ -17,7 +23,23 @@ class Dashboard extends Component {
   render() {
     const { posts, pathname, postIds } = this.props
 
-    if (posts.length === 0 && pathname !== '/new-post') {
+		console.log('Load: ', this.props.loading.loading)
+
+		if (this.props.loading.loading === true) {
+      return (
+				<div className='container text-center'>
+					<Loader
+	         type="Hearts"
+	         color="#B06AB3"
+	         height="200"
+	         width="200"
+	      	/>
+				</div>
+      )
+    }
+
+
+    if (postIds.length === 0 && pathname !== '/new-post') {
       return (
         <div className='container text-center text-muted mt-5'>
           <GoRocket style={{fontSize: '100px', color: '#B06AB3', margin: '20px'}}/>
@@ -32,7 +54,7 @@ class Dashboard extends Component {
         {pathname !== '/new-post' ?
 					<div>
 		        <Filter />
-						<Animated animationIn="fadeInLeft" isVisible={true}>
+						<Animated animationIn="fadeIn" isVisible={true}>
 		        <ul>
 		          {postIds.map((id) => (
 		            <li key={id}>
@@ -42,15 +64,16 @@ class Dashboard extends Component {
 		        </ul>
 		      </Animated>
 				</div>
-			: null}
+				: null}
       </div>
     )
   }
 }
 
-function mapStateToProps ({ posts, filter }, props) {
+function mapStateToProps ({ posts, filter, loading }, props) {
   const { category } = props.match.params
 	const { pathname } = props.location
+
 
   let ids = []
 
@@ -72,12 +95,14 @@ function mapStateToProps ({ posts, filter }, props) {
 
   let filtered_keys = ids.filter(id => !posts[id].deleted)
 
+
   return {
     postIds: filtered_keys,
     category,
   	pathname,
     posts,
-    filter
+    filter,
+		loading
   }
 }
 

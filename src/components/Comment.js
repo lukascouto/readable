@@ -1,18 +1,39 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
+import { handleDeleteComment, handleAddVote } from '../actions/comments'
 import { formatDate } from '../utils/helpers'
 import { FaTrash, FaPen, FaHeartbeat, FaHeart } from 'react-icons/fa'
-import { handleDeleteComment, handleAddVote } from '../actions/comments'
+import { Animated } from "react-animated-css"
 import FormComment from './FormComment'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import Slide from '@material-ui/core/Slide'
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class CommentsList extends Component {
 
   state = {
-    commentSelected: false
+    commentSelected: false,
+    open: false
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
   handleVote = (option) => {
     const { dispatch, comment } = this.props
+    this.setState({ open: false })
     dispatch(handleAddVote( comment, option ))
   }
 
@@ -31,7 +52,6 @@ class CommentsList extends Component {
   handleDelete = () => {
     const { dispatch, comment } = this.props
     dispatch(handleDeleteComment(comment))
-    //console.log('Comentário deletado:', comment)
   }
 
   render() {
@@ -41,17 +61,19 @@ class CommentsList extends Component {
     // Condição para abrir o formulário para edição de comentário
     if (this.state.commentSelected) {
       return (
-        <div className='container container-edit-post-comment my-5 p-3'>
-          <FormComment
-            id={id}
-            onUpdateComment={this.handleEditedCanceled}
-          />
-        </div>
+        <Animated animationIn="fadeInRightBig" isVisible={true}>
+          <div className='container container-edit-post-comment my-5 p-3'>
+            <FormComment
+              id={id}
+              onUpdateComment={this.handleEditedCanceled}
+            />
+          </div>
+        </Animated>
       )
     }
 
     return (
-      <div>
+      <Fragment>
         <div className='card-body'>
           <hr className='mt-0'></hr>
           <div className='container'>
@@ -65,7 +87,7 @@ class CommentsList extends Component {
                   />
                   <FaTrash
                     className='text-muted mr-3'
-                    onClick={this.handleDelete}
+                    onClick={this.handleClickOpen}
                   />
                 </div>
               </div>
@@ -88,7 +110,29 @@ class CommentsList extends Component {
             </div>
           </div>
         </div>
-      </div>
+        <Dialog
+          open={this.state.open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Are you sure you want to delete this comment?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleDelete} color="primary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
     )
   }
 }

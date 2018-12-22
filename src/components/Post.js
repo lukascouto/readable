@@ -1,17 +1,39 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { handleAddVote, handleDeletePost } from '../actions/posts'
 import { formatDate } from '../utils/helpers'
 import { FaTrash, FaPen, FaShareAlt, FaHeartbeat, FaHeart, FaComment } from 'react-icons/fa'
 import { Animated } from "react-animated-css";
 import ReactMarkdown from 'react-markdown/with-html'
-import { Link } from 'react-router-dom'
-import { handleGetAllPosts, handleAddVote, handleDeletePost } from '../actions/posts'
 import FormPost from './FormPost'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import Slide from '@material-ui/core/Slide'
+import Snackbar from '@material-ui/core/Snackbar'
+import Fade from '@material-ui/core/Fade'
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class PostList extends Component {
 
   state = {
-    postSelected: false
+    postSelected: false,
+    open: false,
+    toHome: false,
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
   handleVote = (option) => {
@@ -29,16 +51,18 @@ class PostList extends Component {
 
   handleDelete = () => {
     const { dispatch, post } = this.props
+    this.setState({ open: false })
     dispatch(handleDeletePost(post))
+    this.setState({ toHome: true })
   }
 
   render() {
-
     const { post, id } = this.props
+    const { author, category, timestamp, title, body, voteScore, commentCount } = post
 
-    const {
-      author, category, timestamp, title, body, voteScore, commentCount
-    } = post
+    if (this.state.toHome === true) {
+      return <Redirect to='/'/>
+    }
 
     if (this.state.postSelected) {
       return (
@@ -53,7 +77,7 @@ class PostList extends Component {
     }
 
     return (
-
+      <Fragment>
         <div className='card mt-2'>
           <div className='card-body'>
             <div className='container'>
@@ -69,7 +93,7 @@ class PostList extends Component {
                     />
                     <FaTrash
                       className='text-muted mr-3'
-                      onClick={this.handleDelete}
+                      onClick={this.handleClickOpen}
                     />
                     <FaShareAlt
                       className='text-muted'
@@ -81,9 +105,15 @@ class PostList extends Component {
             </div>
             <Link to={`/${category}/${id}`}>
             <h5 className='card-title mb-1'>{title}</h5>
-            <p className='card-author text-muted'>By <strong>{author}</strong> at {formatDate(timestamp)}</p>
             </Link>
-            <ReactMarkdown source={body} escapeHtml={false}/>
+            <p className='card-author text-muted'>By <strong>{author}</strong> at {formatDate(timestamp)}</p>
+            {this.props.location.pathname === '/' && '/react' && '/redux' && '/udacity' ?
+              <p className='card-text text-muted'>{body.substring(0,30)+'...'}</p> :
+              <ReactMarkdown
+                source={body}
+                escapeHtml={false}
+                className='card-text text-muted'
+              />}
             <hr></hr>
             <div className='container'>
               <div className='row'>
@@ -107,6 +137,29 @@ class PostList extends Component {
             </div>
           </div>
         </div>
+        <Dialog
+          open={this.state.open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Are you sure you want to delete this post?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleDelete} color="primary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
     )
   }
 }
@@ -120,4 +173,4 @@ function mapStateToProps ({ posts }, { id }) {
   }
 }
 
-export default connect(mapStateToProps)(PostList)
+export default withRouter(connect(mapStateToProps)(PostList))

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { MdAddCircleOutline } from 'react-icons/md'
+import LoadingBar from 'react-redux-loading-bar'
 //import book from '../icons/book.svg'
 
 class Nav extends Component {
@@ -39,6 +40,10 @@ class Nav extends Component {
 						</div>
 					</div>
 				</div>
+				<LoadingBar
+					showFastActions
+					style={{ backgroundColor: '#C378C6', height: '5px' }}
+				/>
 	      <nav className="navbar navbar-expand navbar-dark bg-white mb-4 mt-4">
 	        <div className="navbar-nav my-2 mx-auto">
 	          {categories.length > 0 ? (
@@ -52,7 +57,7 @@ class Nav extends Component {
 									{category.name}
 	              </NavLink>
 	            ))
-						)  : null}
+						) : null}
 	        </div>
 	      </nav>
 			</div>

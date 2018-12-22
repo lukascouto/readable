@@ -55,7 +55,6 @@ class FormPost extends Component {
   }
 
   render() {
-
     const { title, body, author, toHome } = this.state
     const { categories, post } = this.props
 
