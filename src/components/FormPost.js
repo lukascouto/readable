@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { handleAddPost, handleEditPost } from '../actions/posts'
+import Snackbar from '@material-ui/core/Snackbar'
+import Slide from '@material-ui/core/Slide'
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class FormPost extends Component {
   state = {
@@ -10,6 +16,7 @@ class FormPost extends Component {
     author: '',
     category: 'react',
     toHome: false,
+    open: false,
   }
 
   componentDidMount() {
@@ -24,9 +31,18 @@ class FormPost extends Component {
     }
   }
 
+  handleClick = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
   // Pega o name que for igual ao state e repassa o value
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
+    this.handleClose()
   }
 
   handleSubmit = (e) => {
@@ -40,10 +56,14 @@ class FormPost extends Component {
     const { title, body, author, category } = this.state
     const { dispatch, post } = this.props
 
-    post ? dispatch(handleEditPost(post, title, body)) && this.props.onUpdatePost()
-         : dispatch(handleAddPost(title, body, author, category))
+    if (title !== '' && body !== '' && author !== '') {
+      post ? dispatch(handleEditPost(post, title, body)) && this.props.onUpdatePost()
+           : dispatch(handleAddPost(title, body, author, category))
 
-    this.setState({ toHome: post ? false : true })
+      this.setState({ toHome: post ? false : true })
+    } else {
+      this.handleClick()
+    }
   }
 
   handleEditedCanceled = (e) => {
@@ -65,10 +85,10 @@ class FormPost extends Component {
     return(
       <div>
         <form onSubmit={this.handleSubmit}>
-          <div className='form-group mb-5'>
-            {post ? <p className='text-muted mb-5'>Author: <strong>{author}</strong> | Category: <strong>{post.category}</strong></p>
+          <div className="form-group mb-5">
+            {post ? <p className="text-muted mb-5">Author: <strong>{author}</strong> | Category: <strong>{post.category}</strong></p>
                   : <select
-                      className='form-control mb-3'
+                      className="form-control mb-3"
                       name="category"
                       onChange={this.handleChange}
                     >
@@ -85,39 +105,45 @@ class FormPost extends Component {
                     </select>}
             {post ? null
                   : <input
-                      className='form-control mb-3'
+                      className="form-control mb-3"
                       placeholder="Your name"
                       name="author"
                       value={author}
                       onChange={this.handleChange}
                     />}
             <input
-              className='form-control mb-3'
+              className="form-control mb-3"
               placeholder="Title"
               name="title"
               value={title}
               onChange={this.handleChange}
             />
             <textarea
-              className='form-control mb-3'
-              rows='8'
+              className="form-control mb-3"
+              rows="8"
               placeholder="Post..."
               name="body"
               value={body}
               onChange={this.handleChange}
             />
             <button
-              className='btn btn-primary'
-              type='submit'>
-                {post ? 'Edit' : 'Post'}
+              className="btn btn-primary"
+              type="submit">
+                {post ? "Edit" : "Post"}
             </button>
             <button
-              className='ml-1 btn btn-secondary'
+              className="ml-1 btn btn-secondary"
               onClick={this.handleEditedCanceled}>
                 Cancel
             </button>
           </div>
         </form>
+        <Snackbar
+          open={this.state.open}
+          onClose={this.handleClose}
+          TransitionComponent={Transition}
+          message={<span className="text-white">You must fill in all of the fields.</span>}
+        />
       </div>
     )
   }

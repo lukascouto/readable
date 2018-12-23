@@ -18,7 +18,6 @@ function addComment (comment, posts) {
   return {
     type: ADD_COMMENT,
     comment,
-    posts
   }
 }
 
@@ -38,10 +37,11 @@ function editComment (id, body) {
   }
 }
 
-function removeComment (id) {
+function removeComment (id, comment) {
   return {
     type: REMOVE_COMMENT,
     id,
+    comment
   }
 }
 
@@ -55,8 +55,7 @@ export function handleGetComments (id) {
 }
 
 export function handleAddComment (body, author, id) {
-  return (dispatch, getState) => {
-    const { posts } = getState()
+  return (dispatch) => {
     return createComment({
       id: generateUID(),
       timestamp: Date.now(),
@@ -64,10 +63,9 @@ export function handleAddComment (body, author, id) {
       author: author,
       parentId: id
     })
-      .then(comment => dispatch(addComment(comment, posts)))
+      .then(comment => dispatch(addComment(comment)))
   }
 }
-
 
 export function handleAddVote (comment, option) {
   return (dispatch) => {
@@ -102,7 +100,7 @@ export function handleDeleteComment (comment) {
     // Atualização Otimista
     // Passa impressão que o item foi atualizado instantaneamente
     // Primeiro remove o item da UI
-    dispatch(removeComment(comment.id))
+    dispatch(removeComment(comment.id, comment))
     // Em seguida tenta remover do banco de dados chamando a API
 		return deleteComment(comment.id)
       // Se houver erro para remover no banco de dados

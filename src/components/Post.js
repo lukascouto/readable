@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { handleAddVote, handleDeletePost } from '../actions/posts'
 import { formatDate } from '../utils/helpers'
 import { FaTrash, FaPen, FaShareAlt, FaHeartbeat, FaHeart, FaComment } from 'react-icons/fa'
-import { Animated } from "react-animated-css";
 import ReactMarkdown from 'react-markdown/with-html'
 import FormPost from './FormPost'
 import Button from '@material-ui/core/Button'
@@ -13,8 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import Slide from '@material-ui/core/Slide'
-import Snackbar from '@material-ui/core/Snackbar'
-import Fade from '@material-ui/core/Fade'
+import { Twitter, Facebook } from 'react-social-sharing'
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -25,6 +23,7 @@ class PostList extends Component {
   state = {
     postSelected: false,
     open: false,
+    openShare: false,
     toHome: false,
   }
 
@@ -34,6 +33,14 @@ class PostList extends Component {
 
   handleClose = () => {
     this.setState({ open: false })
+  }
+
+  handleClickOpenShare = () => {
+    this.setState({ openShare: true })
+  }
+
+  handleCloseShare = () => {
+    this.setState({ openShare: false })
   }
 
   handleVote = (option) => {
@@ -49,6 +56,8 @@ class PostList extends Component {
     this.setState({ postSelected: false })
   }
 
+  // Fecha o Dialog, dispara a ação de deletar o post e passa true para toHome
+  // No render recupera toHome e redireciona para o diretório raíz '/'
   handleDelete = () => {
     const { dispatch, post } = this.props
     this.setState({ open: false })
@@ -60,14 +69,15 @@ class PostList extends Component {
     const { post, id } = this.props
     const { author, category, timestamp, title, body, voteScore, commentCount } = post
 
+    // Se a ação de deletar o post foi disparada, redireciona para o diretório raíz '/'
     if (this.state.toHome === true) {
       return <Redirect to='/'/>
     }
 
     if (this.state.postSelected) {
       return (
-        <div className='container container-edit-post-comment my-5 p-3'>
-          <h3 className='text-center text-muted mt-3 mb-5'>Edit Post</h3>
+        <div className="container container-edit-post-comment my-5 p-3">
+          <h3 className="text-center text-muted mt-3 mb-5">Edit Post</h3>
           <FormPost
             id={id}
             onUpdatePost={this.handleEditedCanceled}
@@ -78,65 +88,73 @@ class PostList extends Component {
 
     return (
       <Fragment>
-        <div className='card mt-2'>
-          <div className='card-body'>
-            <div className='container'>
-              <div className='row'>
-                <Link to={`/${category}`} className='card-category'>
-                <button className='btn mb-3 py-1'>{category}</button>
+        <div className="card mt-2">
+          <div className="card-body">
+            <div className="container">
+              <div className="row">
+                <Link to={`/${category}`} className="card-category">
+                <button className="btn mb-3 py-1">{category}</button>
                 </Link>
-                <div className='ml-auto'>
-                  <div className='post-options px-3'>
+                <div className="ml-auto">
+                  <div className="post-options px-3">
                     <FaPen
-                      className='text-muted mr-3'
+                      className="text-muted mr-3"
                       onClick={this.handleEdit}
                     />
                     <FaTrash
-                      className='text-muted mr-3'
+                      className="text-muted mr-3"
                       onClick={this.handleClickOpen}
                     />
                     <FaShareAlt
-                      className='text-muted'
-                      onClick={this.handleDelete}
+                      className="text-muted"
+                      onClick={this.handleClickOpenShare}
                     />
                   </div>
                 </div>
               </div>
             </div>
             <Link to={`/${category}/${id}`}>
-            <h5 className='card-title mb-1'>{title}</h5>
+            <h5 className="card-title mb-1">{title}</h5>
             </Link>
-            <p className='card-author text-muted'>By <strong>{author}</strong> at {formatDate(timestamp)}</p>
+            <p className="card-author text-muted">By <strong>{author}</strong> at {formatDate(timestamp)}</p>
+            {/* Se o diretório for igual à '/', '/react', '/redux' ou 'udacity'
+                Significa que está na Dashboard, então o body do post será reduzido para 30 caracteres + ...
+            */}
             {this.props.location.pathname === '/' && '/react' && '/redux' && '/udacity' ?
-              <p className='card-text text-muted'>{body.substring(0,30)+'...'}</p> :
+              <p className="card-text text-muted">{body.substring(0,30)+"..."}</p> :
+              /*
+                Caso contrário, está na PostPage, então o body deve ser exibido completo
+                e reconhecer Markdown para estilizar o texto.
+               */
               <ReactMarkdown
                 source={body}
                 escapeHtml={false}
-                className='card-text text-muted'
+                className="card-text text-muted"
               />}
             <hr></hr>
-            <div className='container'>
-              <div className='row'>
+            <div className="container">
+              <div className="row">
                   <FaHeartbeat
-                    color='#B06AB3'
-                    className='heart-up'
+                    color="#B06AB3"
+                    className="heart-up"
                     onClick={() => this.handleVote("upVote")}
                   />
-                  <p className='mx-2 text-muted'>{voteScore}</p>
+                  <p className="mx-2 text-muted">{voteScore}</p>
                   <FaHeart
-                    color='#B06AB3'
-                    className='heart-down'
+                    color="#B06AB3"
+                    className="heart-down"
                     onClick={() => this.handleVote("downVote")}
                   />
-                  <p className='ml-auto mr-2 text-muted'>{commentCount}</p>
+                  <p className="ml-auto mr-2 text-muted">{commentCount}</p>
                   <FaComment
-                    color='#B06AB3'
-                    className='message'
+                    color="#B06AB3"
+                    className="message"
                   />
               </div>
             </div>
           </div>
         </div>
+        {/* Mensagem exibida quando clica em deteletar um post */}
         <Dialog
           open={this.state.open}
           TransitionComponent={Transition}
@@ -159,10 +177,29 @@ class PostList extends Component {
             </Button>
           </DialogActions>
         </Dialog>
+        {/* Exibe o Dialog com as redes sociais para compartilhamento do post */}
+        <Dialog
+          open={this.state.openShare}
+          TransitionComponent={Transition}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <Twitter link="https://github.com" />
+            <Facebook link={window.location.href} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseShare} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Fragment>
     )
   }
 }
+// Lembrar de só compartilhar na página do post
 
 function mapStateToProps ({ posts }, { id }) {
   const post = posts[id]

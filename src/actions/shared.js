@@ -1,5 +1,4 @@
 import { handleGetAllCategories } from './categories'
-import { handleGetAllPosts } from './posts'
 import { handleOptionPost, handleOrderPost } from './filter'
 
 export function handleInitialData () {

@@ -33,18 +33,17 @@ class CommentsList extends Component {
 
   handleVote = (option) => {
     const { dispatch, comment } = this.props
-    this.setState({ open: false })
     dispatch(handleAddVote( comment, option ))
   }
 
-  // Seta um valor verdadeiro após clicar em editar um comentário
-  // Passa no if do render e com isso abre o FormComment com o corpo preenchido
+  // Seta um true após clicar em editar um comentário
+  // Entra no if do render e com isso abre o FormComment com o corpo preenchido
   handleEdit = () => {
     this.setState({ commentSelected: true })
   }
 
-  // Seta um valor falso após editar um comentário
-  // Não passa no if do render e com isso fecha o FormComment
+  // Função chamada após editar/cancelar edição de um comentário
+  // commentSelected recebe false para não renderizar o formulário após uma edição/cancelamento
   handleEditedCanceled = () => {
     this.setState({ commentSelected: false })
   }
@@ -62,7 +61,7 @@ class CommentsList extends Component {
     if (this.state.commentSelected) {
       return (
         <Animated animationIn="fadeInRightBig" isVisible={true}>
-          <div className='container container-edit-post-comment my-5 p-3'>
+          <div className="container container-edit-post-comment my-5 p-3">
             <FormComment
               id={id}
               onUpdateComment={this.handleEditedCanceled}
@@ -74,42 +73,43 @@ class CommentsList extends Component {
 
     return (
       <Fragment>
-        <div className='card-body'>
-          <hr className='mt-0'></hr>
-          <div className='container'>
-            <div className='row'>
-              <p className='card-author text-muted'>By <strong>{author}</strong> at {formatDate(timestamp)}</p>
-              <div className='ml-auto'>
-                <div className='post-options pl-4'>
+        <div className="card-body">
+          <hr className="mt-0"></hr>
+          <div className="container">
+            <div className="row">
+              <p className="card-author text-muted">By <strong>{author}</strong> at {formatDate(timestamp)}</p>
+              <div className="ml-auto">
+                <div className="post-options pl-4">
                   <FaPen
-                    className='text-muted mr-3'
+                    className="text-muted mr-3"
                     onClick={this.handleEdit}
                   />
                   <FaTrash
-                    className='text-muted mr-3'
+                    className="text-muted mr-3"
                     onClick={this.handleClickOpen}
                   />
                 </div>
               </div>
             </div>
           </div>
-          <p className='card-text text-muted'>{body}</p>
-          <div className='container'>
-            <div className='row'>
+          <p className="card-text text-muted">{body}</p>
+          <div className="container">
+            <div className="row">
               <FaHeartbeat
-                color='#B06AB3'
-                className='heart-up'
+                color="#B06AB3"
+                className="heart-up"
                 onClick={() => this.handleVote("upVote")}
               />
-              <p className='mx-2 text-muted'>{voteScore}</p>
+              <p className="mx-2 text-muted">{voteScore}</p>
               <FaHeart
-                color='#B06AB3'
-                className='heart-down'
+                color="#B06AB3"
+                className="heart-down"
                 onClick={() => this.handleVote("downVote")}
               />
             </div>
           </div>
         </div>
+        {/* Mensagem exibida quando clica em deteletar um comentário */}
         <Dialog
           open={this.state.open}
           TransitionComponent={Transition}

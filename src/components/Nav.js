@@ -3,7 +3,6 @@ import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { MdAddCircleOutline } from 'react-icons/md'
 import LoadingBar from 'react-redux-loading-bar'
-//import book from '../icons/book.svg'
 
 class Nav extends Component {
 
@@ -12,29 +11,18 @@ class Nav extends Component {
 
 		return (
 			<div>
-				<div className='banner'>
-					<div className='container'>
-						<div className='row'>
-						{/*
-							<img
-								src={book}
-								style={{
-									width: '50px',
-									height: '50px',
-									fill: 'white'
-								 }}
-								className=''
-								alt="logo" />
-								*/}
+				<div className="banner">
+					<div className="container">
+						<div className="row">
 							<Link to={'/'}>
-							<h1 className='ml-3 mt-4 mb-3 text-light'>Readable</h1>
+							<h1 className="ml-3 mt-4 mb-3 text-light">Readable</h1>
 							</Link>
 							<Link
 								to={'/new-post'}
-								className='ml-auto mt-4 mr-3 pt-1 pr-2'>
+								className="ml-auto mt-4 mr-3 pt-1 pr-2">
 							<MdAddCircleOutline
-								color='#fff'
-								style={{fontSize: '40px'}}
+								color="#fff"
+								style={{fontSize: "40px"}}
 							/>
 							</Link>
 						</div>
@@ -42,7 +30,7 @@ class Nav extends Component {
 				</div>
 				<LoadingBar
 					showFastActions
-					style={{ backgroundColor: '#C378C6', height: '5px' }}
+					style={{ backgroundColor: "#C378C6", height: "5px" }}
 				/>
 	      <nav className="navbar navbar-expand navbar-dark bg-white mb-4 mt-4">
 	        <div className="navbar-nav my-2 mx-auto">
@@ -51,7 +39,7 @@ class Nav extends Component {
 	              <NavLink
 									key={category.name}
 									exact to={`/${category.path}`}
-									className='nav-item nav-link px-3'
+									className="nav-item nav-link px-3"
 									style={category.name !== 'udacity' ? {marginRight: '10px'} : {marginRight: '0'}}
 								>
 									{category.name}

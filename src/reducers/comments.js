@@ -9,11 +9,8 @@ export default function comments (state = {}, action) {
 			}, {})
 			return manipulado
 		case ADD_COMMENT :
-			const teste= action.posts
-			console.log('State: ', teste)
 			return {
 				...state,
-				// recebe o id do comentário e todo o comentário dentro: id: {atributos}
 				[action.comment.id]: action.comment
 			}
 		case VOTE_COMMENT :

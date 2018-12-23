@@ -13,20 +13,20 @@ class Filter extends Component {
   }
 
   changeOrder = () => {
-    this.setState({order: !this.state.order}, () => {
+    this.setState({ order: !this.state.order }, () => {
       this.props.dispatch(handleOrderPost(this.state.order))
     })
   }
 
   render() {
     return (
-      <div className='card-filter py-3'>
-        <div className='card-body mb-3'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-sm-3 col-3 pl-0 pr-0'>
+      <div className="card-filter py-3">
+        <div className="card-body mb-3">
+          <div className="container">
+            <div className="row">
+              <div className="col-8 pl-0 pr-0">
                 <select
-                    className='form-control'
+                    className="form-control"
                     onChange={(event) => this.changeOption(event.target.value)}
                 >
                     <option value="filter" disabled>List by...</option>
@@ -35,24 +35,24 @@ class Filter extends Component {
                     <option value="comments">Comments</option>
                 </select>
               </div>
-              <div className='col-sm-3 col-3 pl-0'>
+              <div className="col-4 pl-0 pr-0">
                 <button
-                  className='form-control btn btn-primary'
+                  className="form-control btn btn-primary"
                   onClick={this.changeOrder}
-                > {this.state.order === true ? 'Asc' : 'Desc'}
+                > {this.state.order === true ? "Asc" : "Desc"}
                 </button>
               </div>
-              <div className='col-6 pl-0 pr-0'>
+              {/* UM DIA, QUANDO EU TIVER MENOS OBRIGAÇÕES :(
+              <div className="col-6 pl-0 pr-0">
                 <input
-                  className='form-control'
+                  className="form-control"
                   placeholder="Search..."
                   name="search"
-
-                  //value={search}
-                  //onChange={this.handleChange}
-
+                  value={search}
+                  onChange={this.handleChange}
                 />
               </div>
+              */}
             </div>
           </div>
         </div>

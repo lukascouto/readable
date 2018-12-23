@@ -5,7 +5,6 @@ import Post from './Post'
 import { GoRocket } from 'react-icons/go'
 import { Animated } from "react-animated-css";
 import { handleGetAllPosts } from '../actions/posts'
-import LoadingScreen from 'react-loading-screen'
 import Loader from 'react-loader-spinner'
 
 class Dashboard extends Component {
@@ -21,53 +20,47 @@ class Dashboard extends Component {
 	}
 
   render() {
-    const { posts, pathname, postIds } = this.props
-
-		console.log('Load: ', this.props.loading.loading)
-
-		if (this.props.loading.loading === true) {
-      return (
-				<div className='container text-center'>
-					<Loader
-	         type="Hearts"
-	         color="#B06AB3"
-	         height="200"
-	         width="200"
-	      	/>
-				</div>
-      )
-    }
-
-
-    if (postIds.length === 0 && pathname !== '/new-post') {
-      return (
-        <div className='container text-center text-muted mt-5'>
-          <GoRocket style={{fontSize: '100px', color: '#B06AB3', margin: '20px'}}/>
-          <h2>No posts yet.</h2>
-          <p>You can be the first! ;)</p>
-        </div>
-      )
-    }
+    const { pathname, postIds } = this.props
 
     return (
       <div>
         {pathname !== '/new-post' ?
 					<div>
-		        <Filter />
-						<Animated animationIn="fadeIn" isVisible={true}>
-		        <ul>
-		          {postIds.map((id) => (
-		            <li key={id}>
-		              <Post id={id} />
-		            </li>
-		          ))}
-		        </ul>
-		      </Animated>
+						{this.props.loading.loading === true ?
+							<div className="container text-center">
+								<Loader
+				         type="Hearts"
+				         color="#B06AB3"
+				         height="200"
+				         width="200"
+				      	/>
+							</div> :
+							<div>
+								{postIds.length === 0 && pathname !== '/new-post' ?
+									<div className="container text-center text-muted mt-5">
+										<GoRocket style={{fontSize: "100px", color: "#B06AB3", margin: "20px"}}/>
+										<h2>No posts yet.</h2>
+										<p>You can be the first! ;)</p>
+									</div>
+									:
+									<div>
+										<Filter />
+										<Animated animationIn="fadeIn" isVisible={true}>
+											<ul>
+												{postIds.map((id) => (
+													<li key={id}>
+														<Post id={id} />
+													</li>
+												))}
+											</ul>
+										</Animated>
+									</div>}
+						 </div>}
 				</div>
 				: null}
       </div>
     )
-  }
+	}
 }
 
 function mapStateToProps ({ posts, filter, loading }, props) {
@@ -98,10 +91,8 @@ function mapStateToProps ({ posts, filter, loading }, props) {
 
   return {
     postIds: filtered_keys,
-    category,
+		category,
   	pathname,
-    posts,
-    filter,
 		loading
   }
 }
